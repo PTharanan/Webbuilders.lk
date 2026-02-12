@@ -1,0 +1,2 @@
+# Enable custom 404 error page
+ErrorDocument 404 /Final_webbuilders_Project/Webbuilders_Admin/404.php

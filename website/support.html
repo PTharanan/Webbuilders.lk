@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBbuilders Support</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f7f6;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .whatsapp-icon {
+            font-size: 60px;
+            color: #25D366;
+            margin-bottom: 20px;
+        }
+
+        h2 { color: #1a2b48; margin-bottom: 10px; font-size: 22px; }
+        p { color: #666; font-size: 15px; margin-bottom: 25px; }
+
+        /* Progress Bar Animation */
+        .loader-bar {
+            width: 100%;
+            height: 6px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-fill {
+            width: 0%;
+            height: 100%;
+            background: #25D366;
+            border-radius: 10px;
+            animation: fillUp 3s linear forwards; /* 3 seconds exact */
+        }
+
+        @keyframes fillUp {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <i class="fab fa-whatsapp whatsapp-icon"></i>
+        <h2>Connecting to Support</h2>
+        <p>Please wait a moment while we redirect you to our WhatsApp chat...</p>
+        
+        <div class="loader-bar">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        const phoneNumber = "94769988123";
+        // Image-il kanda exact message njan encode cheythittundu
+        const message = "Hello WEBbuilders.lk 👋";
+        const encodedMsg = encodeURIComponent(message);
+        
+        const waURL = `https://wa.me/${phoneNumber}?text=${encodedMsg}`;
+
+        // Exact 3 seconds wait
+        setTimeout(() => {
+            window.location.href = waURL;
+        }, 3000);
+    </script>
+
+</body>
+</html>
