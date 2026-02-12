@@ -1,0 +1,115 @@
+[24-Jan-2026 12:51:13 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 12:51:13 Europe/Berlin] Method: POST
+[24-Jan-2026 12:51:13 Europe/Berlin] Timestamp: 2026-01-24 12:51:13
+[24-Jan-2026 12:51:13 Europe/Berlin] Raw input: [{"employee_id":"3","records":[{"day":"7","attendance":true,"in_time":"19:21","out_time":"21:21","tasklog_submitted":true}],"month":1,"year":2026}]
+[24-Jan-2026 12:51:13 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 12:51:13 Europe/Berlin] Saving: Employee 3, Day 7, Month 1, Year 2026
+[24-Jan-2026 12:51:13 Europe/Berlin] Building attendance date: Year=2026, Month=1, Day=7 => 2026-01-07
+[24-Jan-2026 12:51:13 Europe/Berlin] Preparing SQL statement
+[24-Jan-2026 12:51:13 Europe/Berlin] Executing with params: {":employee_id":3,":attendance_date":"2026-01-07",":day":7,":attendance":1,":in_time":"19:21",":out_time":"21:21",":tasklog_submitted":1,":working_hours":2}
+[24-Jan-2026 12:51:13 Europe/Berlin] Execute result: true
+[24-Jan-2026 13:57:05 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 13:57:05 Europe/Berlin] Method: POST
+[24-Jan-2026 13:57:05 Europe/Berlin] Timestamp: 2026-01-24 13:57:05
+[24-Jan-2026 13:57:05 Europe/Berlin] Raw input: [{"employee_id":"4","records":[{"day":"31","attendance":true,"in_time":"12:26","out_time":"23:26","tasklog_submitted":true}],"month":1,"year":2026}]
+[24-Jan-2026 13:57:05 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 13:58:09 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 13:58:09 Europe/Berlin] Method: POST
+[24-Jan-2026 13:58:09 Europe/Berlin] Timestamp: 2026-01-24 13:58:09
+[24-Jan-2026 13:58:09 Europe/Berlin] Raw input: [{"employee_id":"6","records":[{"day":"23","attendance":true,"in_time":"11:32","out_time":"12:33","tasklog_submitted":true}],"month":12,"year":2025}]
+[24-Jan-2026 13:58:09 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 13:58:09 Europe/Berlin] Saving: Employee 6, Day 23, Month 12, Year 2025
+[24-Jan-2026 13:58:09 Europe/Berlin] Building attendance date: Year=2025, Month=12, Day=23 => 2025-12-23
+[24-Jan-2026 13:58:09 Europe/Berlin] Preparing SQL statement
+[24-Jan-2026 13:58:09 Europe/Berlin] Executing with params: {":employee_id":6,":attendance_date":"2025-12-23",":day":23,":attendance":1,":in_time":"11:32",":out_time":"12:33",":tasklog_submitted":1,":working_hours":1.0166666666666666}
+[24-Jan-2026 13:58:09 Europe/Berlin] Execute result: true
+[24-Jan-2026 13:58:29 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 13:58:29 Europe/Berlin] Method: POST
+[24-Jan-2026 13:58:29 Europe/Berlin] Timestamp: 2026-01-24 13:58:29
+[24-Jan-2026 13:58:29 Europe/Berlin] Raw input: [{"employee_id":"6","records":[{"day":"24","attendance":true,"in_time":"00:28","out_time":"23:28","tasklog_submitted":true}],"month":12,"year":2025}]
+[24-Jan-2026 13:58:29 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 13:58:29 Europe/Berlin] Saving: Employee 6, Day 24, Month 12, Year 2025
+[24-Jan-2026 13:58:29 Europe/Berlin] Building attendance date: Year=2025, Month=12, Day=24 => 2025-12-24
+[24-Jan-2026 13:58:29 Europe/Berlin] Preparing SQL statement
+[24-Jan-2026 13:58:29 Europe/Berlin] Executing with params: {":employee_id":6,":attendance_date":"2025-12-24",":day":24,":attendance":1,":in_time":"00:28",":out_time":"23:28",":tasklog_submitted":1,":working_hours":23}
+[24-Jan-2026 13:58:29 Europe/Berlin] Execute result: true
+[24-Jan-2026 13:58:55 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 13:58:55 Europe/Berlin] Method: POST
+[24-Jan-2026 13:58:55 Europe/Berlin] Timestamp: 2026-01-24 13:58:55
+[24-Jan-2026 13:58:55 Europe/Berlin] Raw input: [{"employee_id":"4","records":[{"day":"23","attendance":true,"in_time":"09:28","out_time":"23:28","tasklog_submitted":true}],"month":12,"year":2025}]
+[24-Jan-2026 13:58:55 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 13:59:05 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 13:59:05 Europe/Berlin] Method: POST
+[24-Jan-2026 13:59:05 Europe/Berlin] Timestamp: 2026-01-24 13:59:05
+[24-Jan-2026 13:59:05 Europe/Berlin] Raw input: [{"employee_id":"4","records":[{"day":"22","attendance":true,"in_time":null,"out_time":null,"tasklog_submitted":true}],"month":12,"year":2025}]
+[24-Jan-2026 13:59:05 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 14:01:25 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 14:01:25 Europe/Berlin] Method: POST
+[24-Jan-2026 14:01:25 Europe/Berlin] Timestamp: 2026-01-24 14:01:25
+[24-Jan-2026 14:01:25 Europe/Berlin] Raw input: [{"employee_id":"4","records":[{"day":"7","attendance":true,"in_time":"00:31","out_time":"21:31","tasklog_submitted":true}],"month":1,"year":2026}]
+[24-Jan-2026 14:01:25 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 14:01:25 Europe/Berlin] Saving: Employee 4, Day 7, Month 1, Year 2026
+[24-Jan-2026 14:01:25 Europe/Berlin] Building attendance date: Year=2026, Month=1, Day=7 => 2026-01-07
+[24-Jan-2026 14:01:25 Europe/Berlin] Preparing SQL statement
+[24-Jan-2026 14:01:25 Europe/Berlin] Executing with params: {":employee_id":4,":attendance_date":"2026-01-07",":day":7,":attendance":1,":in_time":"00:31",":out_time":"21:31",":tasklog_submitted":1,":working_hours":21}
+[24-Jan-2026 14:01:25 Europe/Berlin] Execute result: true
+[24-Jan-2026 14:01:37 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 14:01:37 Europe/Berlin] Method: POST
+[24-Jan-2026 14:01:37 Europe/Berlin] Timestamp: 2026-01-24 14:01:37
+[24-Jan-2026 14:01:37 Europe/Berlin] Raw input: [{"employee_id":"4","records":[{"day":"24","attendance":true,"in_time":null,"out_time":null,"tasklog_submitted":true}],"month":1,"year":2026}]
+[24-Jan-2026 14:01:37 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 14:01:37 Europe/Berlin] Saving: Employee 4, Day 24, Month 1, Year 2026
+[24-Jan-2026 14:01:37 Europe/Berlin] Building attendance date: Year=2026, Month=1, Day=24 => 2026-01-24
+[24-Jan-2026 14:01:37 Europe/Berlin] Preparing SQL statement
+[24-Jan-2026 14:01:37 Europe/Berlin] Executing with params: {":employee_id":4,":attendance_date":"2026-01-24",":day":24,":attendance":1,":in_time":null,":out_time":null,":tasklog_submitted":1,":working_hours":null}
+[24-Jan-2026 14:01:37 Europe/Berlin] Execute result: true
+[24-Jan-2026 14:01:55 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 14:01:55 Europe/Berlin] Method: POST
+[24-Jan-2026 14:01:55 Europe/Berlin] Timestamp: 2026-01-24 14:01:55
+[24-Jan-2026 14:01:55 Europe/Berlin] Raw input: [{"employee_id":"4","records":[{"day":"27","attendance":true,"in_time":"00:31","out_time":"23:31","tasklog_submitted":true}],"month":1,"year":2026}]
+[24-Jan-2026 14:01:55 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 14:01:55 Europe/Berlin] Saving: Employee 4, Day 27, Month 1, Year 2026
+[24-Jan-2026 14:01:55 Europe/Berlin] Building attendance date: Year=2026, Month=1, Day=27 => 2026-01-27
+[24-Jan-2026 14:01:55 Europe/Berlin] Preparing SQL statement
+[24-Jan-2026 14:01:55 Europe/Berlin] Executing with params: {":employee_id":4,":attendance_date":"2026-01-27",":day":27,":attendance":1,":in_time":"00:31",":out_time":"23:31",":tasklog_submitted":1,":working_hours":23}
+[24-Jan-2026 14:01:55 Europe/Berlin] Execute result: true
+[24-Jan-2026 14:18:25 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 14:18:25 Europe/Berlin] Method: POST
+[24-Jan-2026 14:18:25 Europe/Berlin] Timestamp: 2026-01-24 14:18:25
+[24-Jan-2026 14:18:25 Europe/Berlin] Raw input: [{"employee_id":"3","records":[{"day":"1","attendance":true,"in_time":"07:30","out_time":"21:24","tasklog_submitted":true}]}]
+[24-Jan-2026 14:18:25 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 14:18:25 Europe/Berlin] Saving: Employee 3, Day 1, Month 01, Year 2026
+[24-Jan-2026 14:18:25 Europe/Berlin] Building attendance date: Year=2026, Month=01, Day=1 => 2026-01-01
+[24-Jan-2026 14:18:25 Europe/Berlin] Preparing SQL statement
+[24-Jan-2026 14:18:25 Europe/Berlin] Executing with params: {":employee_id":3,":attendance_date":"2026-01-01",":day":1,":attendance":1,":in_time":"07:30",":out_time":"21:24",":tasklog_submitted":1,":working_hours":13.9}
+[24-Jan-2026 14:18:25 Europe/Berlin] Execute result: true
+[24-Jan-2026 14:18:38 Europe/Berlin] === Attendance Handler Request ===
+[24-Jan-2026 14:18:38 Europe/Berlin] Method: POST
+[24-Jan-2026 14:18:38 Europe/Berlin] Timestamp: 2026-01-24 14:18:38
+[24-Jan-2026 14:18:38 Europe/Berlin] Raw input: [{"employee_id":"3","records":[{"day":"1","attendance":true,"in_time":"07:30","out_time":"21:24","tasklog_submitted":false}]}]
+[24-Jan-2026 14:18:38 Europe/Berlin] CREATE TABLE result: success
+[24-Jan-2026 14:18:38 Europe/Berlin] Saving: Employee 3, Day 1, Month 01, Year 2026
+[24-Jan-2026 14:18:38 Europe/Berlin] Building attendance date: Year=2026, Month=01, Day=1 => 2026-01-01
+[24-Jan-2026 14:18:38 Europe/Berlin] Preparing SQL statement
+[24-Jan-2026 14:18:38 Europe/Berlin] Executing with params: {":employee_id":3,":attendance_date":"2026-01-01",":day":1,":attendance":1,":in_time":"07:30",":out_time":"21:24",":tasklog_submitted":0,":working_hours":13.9}
+[24-Jan-2026 14:18:38 Europe/Berlin] Execute result: true
+[26-Jan-2026 11:47:53 Europe/Berlin] === Attendance Handler Request ===
+[26-Jan-2026 11:47:53 Europe/Berlin] Method: POST
+[26-Jan-2026 11:47:53 Europe/Berlin] Timestamp: 2026-01-26 11:47:53
+[26-Jan-2026 11:47:53 Europe/Berlin] Raw input: [{"employee_id":"3","records":[{"day":"10","attendance":true,"in_time":"09:18","out_time":"19:18","tasklog_submitted":true}],"month":1,"year":2026}]
+[26-Jan-2026 11:47:53 Europe/Berlin] CREATE TABLE result: success
+[26-Jan-2026 11:47:53 Europe/Berlin] Saving: Employee 3, Day 10, Month 1, Year 2026
+[26-Jan-2026 11:47:53 Europe/Berlin] Building attendance date: Year=2026, Month=1, Day=10 => 2026-01-10
+[26-Jan-2026 11:47:53 Europe/Berlin] Preparing SQL statement
+[26-Jan-2026 11:47:53 Europe/Berlin] Executing with params: {":employee_id":3,":attendance_date":"2026-01-10",":day":10,":attendance":1,":in_time":"09:18",":out_time":"19:18",":tasklog_submitted":1,":working_hours":10}
+[26-Jan-2026 11:47:53 Europe/Berlin] Execute result: true
+[11-Feb-2026 12:33:52 Europe/Berlin] === Attendance Handler Request ===
+[11-Feb-2026 12:33:52 Europe/Berlin] Method: POST
+[11-Feb-2026 12:33:52 Europe/Berlin] Timestamp: 2026-02-11 12:33:52
+[11-Feb-2026 12:33:52 Europe/Berlin] Raw input: [{"employee_id":"4","records":[{"day":"2","attendance":true,"in_time":"18:03","out_time":"21:03","tasklog_submitted":true}],"month":2,"year":2026}]
+[11-Feb-2026 12:33:52 Europe/Berlin] CREATE TABLE result: success
+[11-Feb-2026 12:33:52 Europe/Berlin] Saving: Employee 4, Day 2, Month 2, Year 2026
+[11-Feb-2026 12:33:52 Europe/Berlin] Building attendance date: Year=2026, Month=2, Day=2 => 2026-02-02
+[11-Feb-2026 12:33:52 Europe/Berlin] Preparing SQL statement
+[11-Feb-2026 12:33:52 Europe/Berlin] Executing with params: {":employee_id":4,":attendance_date":"2026-02-02",":day":2,":attendance":1,":in_time":"18:03",":out_time":"21:03",":tasklog_submitted":1,":working_hours":3}
+[11-Feb-2026 12:33:52 Europe/Berlin] Execute result: true
