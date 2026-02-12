@@ -6,7 +6,7 @@
       <i class="fas fa-times"></i>
     </button>
   </div>
-  <nav class="flex-1 px-4 py-2">
+  <nav class="flex-1 px-4 py-2 overflow-y-auto custom-scrollbar">
     <ul>
       <li class="my-2"><a href="admindash.php" class="block px-4 py-3 rounded-lg <?php echo basename($_SERVER['PHP_SELF']) == 'admindash.php' ? 'bg-white/10' : 'hover:bg-white/10'; ?> transition-all duration-300 flex items-center gap-3"><i class="fas fa-tachometer-alt w-5 text-center"></i> Dashboard</a></li>
       <li class="my-2"><a href="attendance.php" class="block px-4 py-3 rounded-lg <?php echo basename($_SERVER['PHP_SELF']) == 'attendance.php' ? 'bg-white/10' : 'hover:bg-white/10'; ?> transition-all duration-300 flex items-center gap-3"><i class="fas fa-id-card w-5 text-center"></i> Attendance</a></li>
@@ -15,6 +15,7 @@
       <li class="my-2"><a href="adminTeam.php" class="block px-4 py-3 rounded-lg <?php echo basename($_SERVER['PHP_SELF']) == 'adminTeam.php' ? 'bg-white/10' : 'hover:bg-white/10'; ?> transition-all duration-300 flex items-center gap-3"><i class="fas fa-users w-5 text-center"></i> Team Members</a></li>
       <li class="my-2"><a href="allSubscribers.php" class="block px-4 py-3 rounded-lg <?php echo basename($_SERVER['PHP_SELF']) == 'allSubscribers.php' ? 'bg-white/10' : 'hover:bg-white/10'; ?> transition-all duration-300 flex items-center gap-3"><i class="fas fa-users w-5 text-center"></i> Subscribers</a></li>
       <li class="my-2"><a href="subscriptionPlan.php" class="block px-4 py-3 rounded-lg <?php echo basename($_SERVER['PHP_SELF']) == 'subscriptionPlan.php' ? 'bg-white/10' : 'hover:bg-white/10'; ?> transition-all duration-300 flex items-center gap-3"><i class="fas fa-tag w-5 text-center"></i> Subscription Plans</a></li>
+      <li class="my-2"><a href="manage_admins.php" class="block px-4 py-3 rounded-lg <?php echo basename($_SERVER['PHP_SELF']) == 'manage_admins.php' ? 'bg-white/10' : 'hover:bg-white/10'; ?> transition-all duration-300 flex items-center gap-3"><i class="fas fa-cog w-5 text-center"></i> Manage Admin</a></li>
     </ul>
   </nav>
   <div class="p-6 border-t border-white/20">
