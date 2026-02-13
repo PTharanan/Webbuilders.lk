@@ -50,16 +50,30 @@ ob_start();
 
   .close-modal {
     position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
-    font-size: 1.5rem;
+    right: 1.25rem;
+    top: 1.25rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
     cursor: pointer;
     color: #64748b;
-    transition: color 0.3s;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    z-index: 10;
+    line-height: 0;
+    padding-bottom: 4px;
+    /* Offset for the &times; character's natural baseline */
   }
 
   .close-modal:hover {
     color: #ef4444;
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+    transform: rotate(90deg);
   }
 
   .form-group {
@@ -546,6 +560,48 @@ ob_start();
   .dark .autocomplete-item-nic {
     color: #9ca3af;
   }
+
+  /* Ensure delete modals are on top of other modals */
+  #deleteModal,
+  #deleteDocModal {
+    z-index: 1000;
+  }
+
+  /* 3D Icon Flip Effect */
+  .icon-flipper-container {
+    perspective: 1000px;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.5rem auto;
+  }
+
+  .icon-flipper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .icon-flipper-container:hover .icon-flipper {
+    transform: rotateY(180deg);
+  }
+
+  .icon-front,
+  .icon-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .icon-back {
+    transform: rotateY(180deg);
+  }
 </style>
 
 <!-- Main Content -->
@@ -588,6 +644,7 @@ ob_start();
             <th>Joining Date</th>
             <th>Status</th>
             <th>Pending Docs</th>
+            <th>Additional document</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -1046,8 +1103,15 @@ ob_start();
   <div class="modal-content" style="max-width: 500px;">
     <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
     <div class="text-center">
-      <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center">
-        <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"></i>
+      <div class="icon-flipper-container">
+        <div class="icon-flipper">
+          <div class="icon-front bg-red-100 dark:bg-red-900/40">
+            <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"></i>
+          </div>
+          <div class="icon-back bg-red-600 text-white shadow-lg">
+            <i class="fas fa-trash text-2xl"></i>
+          </div>
+        </div>
       </div>
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Delete Employee</h3>
       <p class="text-gray-600 dark:text-gray-400 mb-6">
@@ -1068,15 +1132,58 @@ ob_start();
   </div>
 </div>
 
+<!-- Additional Document Delete Confirmation Modal -->
+<div id="deleteDocModal" class="modal">
+  <div class="modal-content" style="max-width: 500px;">
+    <span class="close-modal" onclick="closeDeleteDocModal()">&times;</span>
+    <div class="text-center">
+      <div class="icon-flipper-container">
+        <div class="icon-flipper">
+          <div class="icon-front bg-red-100 dark:bg-red-900/40">
+            <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"></i>
+          </div>
+          <div class="icon-back bg-red-600 text-white shadow-lg">
+            <i class="fas fa-trash text-2xl"></i>
+          </div>
+        </div>
+      </div>
+      <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Delete Document</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">
+        Are you sure you want to delete this additional document? This action cannot be undone.
+      </p>
+      <div class="flex gap-3">
+        <button onclick="closeDeleteDocModal()"
+          class="flex-1 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-semibold">
+          Cancel
+        </button>
+        <button onclick="confirmDeleteDoc()"
+          class="flex-1 py-3 rounded-xl bg-red-600 text-white hover:bg-red-700 transition-colors font-semibold">
+          <i class="fas fa-trash mr-2"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- More Employee Modal -->
 <div id="moreModal" class="modal">
   <div class="modal-content">
     <span class="close-modal" onclick="closeMoreModal()">&times;</span>
     <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
-      <i class="fas fa-file-medical mr-2"></i>Additional Documents
+      <i class="fas fa-file-medical mr-2"></i>Manage Additional Documents
     </h2>
 
-    <form id="additionalDocumentsForm" enctype="multipart/form-data">
+    <!-- Existing Documents List -->
+    <div class="mb-8">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-200">Existing Documents</h3>
+      <div id="additionalDocsList" class="max-h-60 overflow-y-auto pr-2">
+        <!-- Loaded via JS -->
+      </div>
+    </div>
+
+    <form id="additionalDocumentsForm" enctype="multipart/form-data"
+      class="border-t pt-6 border-gray-200 dark:border-gray-700">
+      <h3 class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200" id="formTitle">Add New Document</h3>
       <input type="hidden" name="id" id="more_id">
 
       <div class="grid-2">
@@ -1119,6 +1226,8 @@ ob_start();
 <script>
   let employees = [];
   let deleteEmployeeId = null;
+  let deleteDocId = null;
+  let deleteDocEmpId = null;
 
   // Load employees on page load
   document.addEventListener('DOMContentLoaded', function () {
@@ -1203,6 +1312,7 @@ ob_start();
 
     tbody.innerHTML = data.map(emp => {
       const pendingCount = getPendingDocumentsCount(emp);
+      const additionalCount = Number(emp.additional_docs_count || 0);
       const pendingBadgeColor = pendingCount === 0 ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
         pendingCount <= 2 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
           'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
@@ -1220,6 +1330,14 @@ ob_start();
       <td>
         <span class="px-3 py-1 rounded-full text-sm font-semibold ${pendingBadgeColor}">
           ${pendingCount} pending
+        </span>
+      </td>
+      <td>
+        <span onclick="moreEmployee(${emp.id})" class="cursor-pointer px-3 py-1 rounded-full text-sm font-semibold ${additionalCount > 0
+          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+          : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+        }">
+          ${additionalCount} Additional Docs
         </span>
       </td>
       <td class="flex items-center">
@@ -1304,6 +1422,16 @@ ob_start();
     deleteEmployeeId = null;
   }
 
+  function openDeleteDocModal() {
+    document.getElementById('deleteDocModal').classList.add('active');
+  }
+
+  function closeDeleteDocModal() {
+    document.getElementById('deleteDocModal').classList.remove('active');
+    deleteDocId = null;
+    deleteDocEmpId = null;
+  }
+
   function openMoreModal() {
     document.getElementById('moreModal').classList.add('active');
   }
@@ -1314,23 +1442,7 @@ ob_start();
   }
 
   function clearMoreModal() {
-    const moreId = document.getElementById('more_id').value;
-    const form = document.getElementById('additionalDocumentsForm');
-    form.reset();
-
-    // Restore the ID as we only want to clear the document fields
-    document.getElementById('more_id').value = moreId;
-
-    // Clear the displayed file name
-    const fileNameDisplay = document.getElementById('additional_document_name');
-    if (fileNameDisplay) {
-      fileNameDisplay.textContent = '';
-    }
-
-    // Reset the published date to today
-    const today = new Date().toISOString().split('T')[0];
-    const dateInput = document.getElementById('document_published_date');
-    if (dateInput) dateInput.value = today;
+    resetMoreForm();
 
     // Autofocus the Document name field
     const nameInput = document.getElementById('document_name');
@@ -1548,9 +1660,13 @@ ob_start();
   document.getElementById('additionalDocumentsForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    console.log('=== ADDING ADDITIONAL DOCUMENT ===');
+    const docIdInput = document.getElementById('edit_doc_id');
+    const isUpdate = !!docIdInput;
+    const empId = document.getElementById('more_id').value;
+
+    console.log(isUpdate ? '=== UPDATING ADDITIONAL DOCUMENT ===' : '=== ADDING ADDITIONAL DOCUMENT ===');
     const formData = new FormData(this);
-    formData.append('action', 'add_more');
+    formData.append('action', isUpdate ? 'update_more' : 'add_more');
 
     fetch('employee_handler.php', {
       method: 'POST',
@@ -1561,8 +1677,18 @@ ob_start();
         try {
           const data = JSON.parse(text);
           if (data.success) {
-            showSuccess('Additional document saved successfully');
-            closeMoreModal();
+            showSuccess(isUpdate ? 'Additional document updated successfully' : 'Additional document saved successfully');
+            if (isUpdate) {
+              resetMoreForm();
+            } else {
+              this.reset();
+              document.getElementById('more_id').value = empId;
+              const fileNameDisplay = document.getElementById('additional_document_name');
+              if (fileNameDisplay) fileNameDisplay.textContent = '';
+              const today = new Date().toISOString().split('T')[0];
+              document.getElementById('document_published_date').value = today;
+            }
+            loadAdditionalDocuments(empId);
             loadEmployees();
           } else {
             showError(data.message || 'Unknown error occurred');
@@ -1788,25 +1914,153 @@ ob_start();
 
   // More employee
   function moreEmployee(id) {
-    fetch(`employee_handler.php?action=get&id=${id}`)
+    document.getElementById('more_id').value = id;
+    loadAdditionalDocuments(id);
+    openMoreModal();
+  }
+
+  // Load and display additional documents
+  function loadAdditionalDocuments(empId) {
+    const listContainer = document.getElementById('additionalDocsList');
+    listContainer.innerHTML = '<div class="text-center py-4"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+
+    fetch(`employee_handler.php?action=fetch_more&emp_id=${empId}`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          const emp = data.data;
-
-          document.getElementById('more_id').value = emp.id;
-
-          // Display current documents
-          displayCurrentDocuments(emp);
-
-          openMoreModal();
+          if (data.data.length === 0) {
+            listContainer.innerHTML = '<p class="text-gray-500 italic text-center py-4">No additional documents found.</p>';
+          } else {
+            listContainer.innerHTML = data.data.map(doc => `
+              <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg mb-2 border-l-4 border-yellow-500">
+                <div class="flex-1">
+                  <h4 class="font-semibold text-gray-800 dark:text-gray-100">${doc.doc_name}</h4>
+                  <p class="text-xs text-gray-500">${doc.date}</p>
+                </div>
+                <div class="flex gap-2">
+                  <a href="${doc.doc_url}" target="_blank" class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors" title="View">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  <button onclick="editAdditionalDoc(${JSON.stringify(doc).replace(/"/g, '&quot;')})" class="p-2 text-amber-600 hover:bg-amber-100 rounded-lg transition-colors" title="Edit">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button onclick="deleteAdditionalDoc(${doc.id}, ${empId})" class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors" title="Delete">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            `).join('');
+          }
         } else {
-          showError('Failed to load employee data');
+          listContainer.innerHTML = '<p class="text-red-500 text-center py-4">Error loading documents.</p>';
         }
       })
       .catch(error => {
         console.error('Error:', error);
-        showError('Failed to load employee data');
+        listContainer.innerHTML = '<p class="text-red-500 text-center py-4">Failed to load documents.</p>';
+      });
+  }
+
+  // Edit additional document
+  function editAdditionalDoc(doc) {
+    document.getElementById('more_id').value = doc.emp_id;
+    // Set a hidden field for the document ID so the backend knows we are updating
+    let docIdInput = document.getElementById('edit_doc_id');
+    if (!docIdInput) {
+      docIdInput = document.createElement('input');
+      docIdInput.type = 'hidden';
+      docIdInput.name = 'doc_id';
+      docIdInput.id = 'edit_doc_id';
+      document.getElementById('additionalDocumentsForm').appendChild(docIdInput);
+    }
+    docIdInput.value = doc.id;
+
+    document.getElementById('document_name').value = doc.doc_name;
+    document.getElementById('document_published_date').value = doc.date;
+
+    // Change form title and submit button text
+    document.getElementById('formTitle').textContent = 'Edit Document';
+    const submitBtn = document.querySelector('#additionalDocumentsForm button[type="submit"]');
+    submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Update';
+
+    // Set requirement to false for file when editing
+    document.getElementById('additional_document').required = false;
+
+    // Add a "Cancel Edit" button if it doesn't exist
+    if (!document.getElementById('cancelEditBtn')) {
+      const cancelBtn = document.createElement('button');
+      cancelBtn.type = 'button';
+      cancelBtn.id = 'cancelEditBtn';
+      cancelBtn.className = 'flex-1 py-3 rounded-xl border border-orange-300 text-orange-600 hover:bg-orange-50 font-semibold transition-colors';
+      cancelBtn.textContent = 'Cancel Edit';
+      cancelBtn.onclick = function () {
+        resetMoreForm();
+      };
+      submitBtn.parentElement.insertBefore(cancelBtn, submitBtn);
+    }
+  }
+
+  function resetMoreForm() {
+    const form = document.getElementById('additionalDocumentsForm');
+    const empId = document.getElementById('more_id').value;
+    form.reset();
+    document.getElementById('more_id').value = empId;
+
+    const docIdInput = document.getElementById('edit_doc_id');
+    if (docIdInput) docIdInput.remove();
+
+    const cancelBtn = document.getElementById('cancelEditBtn');
+    if (cancelBtn) cancelBtn.remove();
+
+    document.getElementById('formTitle').textContent = 'Add New Document';
+    const submitBtn = document.querySelector('#additionalDocumentsForm button[type="submit"]');
+    submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Save';
+    document.getElementById('additional_document').required = true;
+
+    // Clear the displayed file name
+    const fileNameDisplay = document.getElementById('additional_document_name');
+    if (fileNameDisplay) {
+      fileNameDisplay.textContent = '';
+    }
+
+    // Reset date to today
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('document_published_date');
+    if (dateInput) dateInput.value = today;
+  }
+
+  // Delete additional document
+  function deleteAdditionalDoc(docId, empId) {
+    deleteDocId = docId;
+    deleteDocEmpId = empId;
+    openDeleteDocModal();
+  }
+
+  function confirmDeleteDoc() {
+    if (!deleteDocId || !deleteDocEmpId) return;
+
+    const formData = new FormData();
+    formData.append('action', 'delete_more');
+    formData.append('id', deleteDocId);
+
+    fetch('employee_handler.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showSuccess('Document deleted successfully');
+          loadAdditionalDocuments(deleteDocEmpId);
+          loadEmployees(); // Update counts in table
+          closeDeleteDocModal();
+        } else {
+          showError(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showError('Failed to delete document');
       });
   }
 
@@ -1895,7 +2149,7 @@ ob_start();
 
   // Close modals on outside click
   window.onclick = function (event) {
-    const modals = ['addModal', 'editModal', 'viewModal', 'deleteModal', 'moreModal'];
+    const modals = ['addModal', 'editModal', 'viewModal', 'deleteModal', 'moreModal', 'deleteDocModal'];
     modals.forEach(modalId => {
       const modal = document.getElementById(modalId);
       if (event.target === modal) {

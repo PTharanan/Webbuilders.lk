@@ -84,6 +84,15 @@ switch ($action) {
     case 'add_more':
         addAdditionalDocument($conn);
         break;
+    case 'fetch_more':
+        fetchAdditionalDocuments($conn);
+        break;
+    case 'delete_more':
+        deleteAdditionalDocument($conn);
+        break;
+    case 'update_more':
+        updateAdditionalDocument($conn);
+        break;
     default:
         echo json_encode(['success' => false, 'message' => 'Invalid action']);
         break;
@@ -97,19 +106,22 @@ function fetchEmployees($conn)
     $search = $_GET['search'] ?? '';
     $status = $_GET['status'] ?? '';
 
-    $sql = "SELECT * FROM employees WHERE 1=1";
+    $sql = "SELECT e.*, 
+            (SELECT COUNT(*) FROM additional_documents ad WHERE ad.emp_id = e.id) as additional_docs_count 
+            FROM employees e 
+            WHERE 1=1";
 
     if (!empty($search)) {
         $search = $conn->real_escape_string($search);
-        $sql .= " AND (name LIKE '%$search%' OR phone_number LIKE '%$search%')";
+        $sql .= " AND (e.name LIKE '%$search%' OR e.phone_number LIKE '%$search%')";
     }
 
     if (!empty($status)) {
         $status = $conn->real_escape_string($status);
-        $sql .= " AND status = '$status'";
+        $sql .= " AND e.status = '$status'";
     }
 
-    $sql .= " ORDER BY created_at DESC";
+    $sql .= " ORDER BY e.created_at DESC";
 
     $result = $conn->query($sql);
     $employees = [];
@@ -313,6 +325,16 @@ function editEmployee($conn)
                 throw new Exception('Failed to rename upload directory');
             }
             error_log('Renamed folder from ' . $old_folder . ' to ' . $folder_name);
+
+            // Update paths in $existing array so uploadDocuments uses new paths
+            foreach ($existing as $key => $value) {
+                if (is_string($value) && strpos($value, "uploads/employees/$old_folder/") !== false) {
+                    $existing[$key] = str_replace("uploads/employees/$old_folder/", "uploads/employees/$folder_name/", $value);
+                }
+            }
+
+            // Also update additional documents paths in database
+            $conn->query("UPDATE additional_documents SET doc_url = REPLACE(doc_url, 'uploads/employees/$old_folder/', 'uploads/employees/$folder_name/') WHERE emp_id = $id");
         } elseif (!file_exists($upload_dir)) {
             if (!mkdir($upload_dir, 0777, true)) {
                 throw new Exception('Failed to create upload directory');
@@ -570,8 +592,17 @@ function addAdditionalDocument($conn)
             $safe_doc_name = preg_replace('/[^a-z0-9]/i', '_', strtolower($document_name));
 
             // Use the requested format: additional_doc_[document_name]
-            $new_filename = 'additional_doc_' . $safe_doc_name . '.' . $file_ext;
+            $base_filename = 'additional_doc_' . $safe_doc_name;
+            $new_filename = $base_filename . '.' . $file_ext;
             $target_path = $upload_dir . $new_filename;
+
+            // Check if file exists and append counter if needed
+            $counter = 1;
+            while (file_exists($target_path)) {
+                $new_filename = $base_filename . '_' . $counter . '.' . $file_ext;
+                $target_path = $upload_dir . $new_filename;
+                $counter++;
+            }
 
             if (move_uploaded_file($file['tmp_name'], $target_path)) {
                 $document_path = $target_path;
@@ -595,6 +626,161 @@ function addAdditionalDocument($conn)
     } catch (Exception $e) {
         error_log('Exception in addAdditionalDocument: ' . $e->getMessage());
         ob_clean();
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+// Fetch all additional documents for an employee
+function fetchAdditionalDocuments($conn)
+{
+    $emp_id = $_GET['emp_id'] ?? 0;
+
+    if ($emp_id <= 0) {
+        echo json_encode(['success' => false, 'message' => 'Invalid employee ID']);
+        return;
+    }
+
+    $emp_id = $conn->real_escape_string($emp_id);
+    $sql = "SELECT * FROM additional_documents WHERE emp_id = $emp_id ORDER BY date DESC, id DESC";
+    $result = $conn->query($sql);
+    $docs = [];
+
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $docs[] = $row;
+        }
+        echo json_encode(['success' => true, 'data' => $docs]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Failed to fetch documents']);
+    }
+}
+
+// Delete an additional document
+function deleteAdditionalDocument($conn)
+{
+    try {
+        $id = $_POST['id'] ?? 0;
+
+        if ($id <= 0) {
+            echo json_encode(['success' => false, 'message' => 'Invalid document ID']);
+            return;
+        }
+
+        $id = $conn->real_escape_string($id);
+
+        // Get document info to delete file
+        $result = $conn->query("SELECT doc_url FROM additional_documents WHERE id = $id");
+        if ($result && $result->num_rows > 0) {
+            $doc = $result->fetch_assoc();
+            if (!empty($doc['doc_url']) && file_exists($doc['doc_url'])) {
+                unlink($doc['doc_url']);
+            }
+
+            if ($conn->query("DELETE FROM additional_documents WHERE id = $id")) {
+                echo json_encode(['success' => true, 'message' => 'Document deleted successfully']);
+            } else {
+                throw new Exception('Failed to delete document from database');
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Document not found']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+// Update an additional document
+function updateAdditionalDocument($conn)
+{
+    try {
+        $id = $conn->real_escape_string($_POST['doc_id'] ?? 0);
+        $document_name = $conn->real_escape_string($_POST['document_name'] ?? '');
+        $published_date = $conn->real_escape_string($_POST['published_date'] ?? '');
+
+        if ($id <= 0 || empty($document_name)) {
+            echo json_encode(['success' => false, 'message' => 'Document ID and Name are required']);
+            return;
+        }
+
+        // Get existing document info
+        $result = $conn->query("SELECT * FROM additional_documents WHERE id = $id");
+        if (!$result || $result->num_rows == 0) {
+            throw new Exception('Document not found');
+        }
+        $existing = $result->fetch_assoc();
+        $emp_id = $existing['emp_id'];
+        $old_doc_url = $existing['doc_url'];
+        $old_doc_name = $existing['doc_name'];
+
+        // Get employee folder
+        $res = $conn->query("SELECT folder_name FROM employees WHERE id = $emp_id");
+        $emp = $res->fetch_assoc();
+        $upload_dir = "uploads/employees/{$emp['folder_name']}/";
+
+        $doc_url = $old_doc_url;
+
+        // Handle file replacement if new file is uploaded
+        if (isset($_FILES['additional_document']) && $_FILES['additional_document']['error'] == 0) {
+            // Delete old file
+            if (!empty($old_doc_url) && file_exists($old_doc_url)) {
+                unlink($old_doc_url);
+            }
+
+            // Upload new file
+            $file = $_FILES['additional_document'];
+            $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $safe_doc_name = preg_replace('/[^a-z0-9]/i', '_', strtolower($document_name));
+            $base_filename = 'additional_doc_' . $safe_doc_name;
+            $new_filename = $base_filename . '.' . $file_ext;
+            $target_path = $upload_dir . $new_filename;
+
+            // Collision handling (old rule)
+            $counter = 1;
+            while (file_exists($target_path)) {
+                $target_path = $upload_dir . $base_filename . '_' . $counter . '.' . $file_ext;
+                $counter++;
+            }
+
+            if (move_uploaded_file($file['tmp_name'], $target_path)) {
+                $doc_url = $target_path;
+            } else {
+                throw new Exception('Failed to move uploaded file');
+            }
+        } else if ($document_name !== $old_doc_name && !empty($old_doc_url) && file_exists($old_doc_url)) {
+            // NO NEW FILE, BUT NAME CHANGED -> RENAME EXISTING FILE
+            $file_ext = strtolower(pathinfo($old_doc_url, PATHINFO_EXTENSION));
+            $safe_doc_name = preg_replace('/[^a-z0-9]/i', '_', strtolower($document_name));
+            $base_filename = 'additional_doc_' . $safe_doc_name;
+            $new_filename = $base_filename . '.' . $file_ext;
+            $target_path = $upload_dir . $new_filename;
+
+            // Only rename if the name actually results in a different filename
+            if ($target_path !== $old_doc_url) {
+                // Collision handling
+                $counter = 1;
+                while (file_exists($target_path)) {
+                    $target_path = $upload_dir . $base_filename . '_' . $counter . '.' . $file_ext;
+                    $counter++;
+                }
+
+                if (rename($old_doc_url, $target_path)) {
+                    $doc_url = $target_path;
+                }
+            }
+        }
+
+        $sql = "UPDATE additional_documents SET 
+                doc_name = '$document_name', 
+                date = '$published_date', 
+                doc_url = '$doc_url' 
+                WHERE id = $id";
+
+        if ($conn->query($sql)) {
+            echo json_encode(['success' => true, 'message' => 'Document updated successfully']);
+        } else {
+            throw new Exception('Database error: ' . $conn->error);
+        }
+    } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
 }
