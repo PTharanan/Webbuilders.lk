@@ -1,4 +1,5 @@
 <?php
+require_once 'auth_check.php';
 $pageTitle = 'Employee Management';
 $pageSubtitle = 'Manage employee records and documents';
 
