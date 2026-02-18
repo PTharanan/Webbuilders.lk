@@ -603,6 +603,134 @@ ob_start();
   .icon-back {
     transform: rotateY(180deg);
   }
+
+  /* Document item animation */
+  @keyframes docFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .doc-item {
+    animation: docFadeIn 0.4s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* Staggered animation delays for multiple items */
+  .doc-item:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+
+  .doc-item:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .doc-item:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+
+  .doc-item:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+
+  .doc-item:nth-child(5) {
+    animation-delay: 0.25s;
+  }
+
+  .doc-item:nth-child(6) {
+    animation-delay: 0.3s;
+  }
+
+  .doc-item:nth-child(7) {
+    animation-delay: 0.35s;
+  }
+
+  .doc-item:nth-child(8) {
+    animation-delay: 0.4s;
+  }
+
+  .doc-item:nth-child(9) {
+    animation-delay: 0.45s;
+  }
+
+  .doc-item:nth-child(10) {
+    animation-delay: 0.5s;
+  }
+
+  /* Smooth scrollbar styling */
+  #additionalDocsList {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+
+  #additionalDocsList::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #additionalDocsList::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #additionalDocsList::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+  }
+
+  #additionalDocsList::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+  }
+
+  .dark #additionalDocsList::-webkit-scrollbar-thumb {
+    background-color: #475569;
+  }
+
+  .dark #additionalDocsList::-webkit-scrollbar-thumb:hover {
+    background-color: #64748b;
+  }
+
+  /* Form section animation */
+  @keyframes formSlideDown {
+    from {
+      opacity: 0;
+      max-height: 0;
+      transform: translateY(-20px);
+    }
+
+    to {
+      opacity: 1;
+      max-height: 1000px;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes formSlideUp {
+    from {
+      opacity: 1;
+      max-height: 1000px;
+      transform: translateY(0);
+    }
+
+    to {
+      opacity: 0;
+      max-height: 0;
+      transform: translateY(-20px);
+    }
+  }
+
+  .form-section {
+    animation: formSlideDown 0.5s ease-out forwards;
+    overflow: hidden;
+  }
+
+  .form-section.hiding {
+    animation: formSlideUp 0.4s ease-in forwards;
+  }
 </style>
 
 <!-- Main Content -->
@@ -1176,14 +1304,14 @@ ob_start();
 
     <!-- Existing Documents List -->
     <div class="mb-8">
-      <h3 class="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-200">Existing Documents</h3>
-      <div id="additionalDocsList" class="max-h-60 overflow-y-auto pr-2">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-200">Additional Existing Documents</h3>
+      <div id="additionalDocsList" class="max-h-40 overflow-y-auto pr-2">
         <!-- Loaded via JS -->
       </div>
     </div>
 
     <form id="additionalDocumentsForm" enctype="multipart/form-data"
-      class="border-t pt-6 border-gray-200 dark:border-gray-700">
+      class="form-section border-t pt-6 border-gray-200 dark:border-gray-700">
       <h3 class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200" id="formTitle">Add New Document</h3>
       <input type="hidden" name="id" id="more_id">
 
@@ -1933,7 +2061,7 @@ ob_start();
             listContainer.innerHTML = '<p class="text-gray-500 italic text-center py-4">No additional documents found.</p>';
           } else {
             listContainer.innerHTML = data.data.map(doc => `
-              <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg mb-2 border-l-4 border-yellow-500">
+              <div class="doc-item flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg mb-2 border-l-4 border-yellow-500">
                 <div class="flex-1">
                   <h4 class="font-semibold text-gray-800 dark:text-gray-100">${doc.doc_name}</h4>
                   <p class="text-xs text-gray-500">${doc.date}</p>

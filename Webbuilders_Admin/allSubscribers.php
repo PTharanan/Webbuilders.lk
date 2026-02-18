@@ -1,19 +1,9 @@
 <?php
+require_once 'auth_check.php';
 /**
  * PayHere All Subscribers
  * Displays all subscribers from PayHere API
  */
-
-// Start session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
 
 // Include database connection
 require_once 'dbConnect.php';
@@ -39,19 +29,19 @@ $userId = $_SESSION['user_id'];
 // Handle AJAX requests for subscription details
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSubscriptionDetails') {
     header('Content-Type: application/json');
-    
+
     $subId = $_GET['sub_id'] ?? null;
     if (!$subId) {
         echo json_encode(['error' => 'Subscription ID not provided']);
         exit;
     }
-    
+
     $accessToken = getAccessToken();
     if (!$accessToken) {
         echo json_encode(['error' => 'Failed to authenticate with PayHere']);
         exit;
     }
-    
+
     // Fetch all subscriptions to find the one we need
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/subscription');
@@ -63,15 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    
+
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+
     if ($httpCode === 200) {
         $responseData = json_decode($response, true);
         $subscriptionData = null;
-        
+
         // Find the subscription with matching ID
         if (isset($responseData['data']) && is_array($responseData['data'])) {
             foreach ($responseData['data'] as $sub) {
@@ -81,12 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                 }
             }
         }
-        
+
         if (!$subscriptionData) {
             echo json_encode(['error' => 'Subscription not found']);
             exit;
         }
-        
+
         // Fetch subscription payments
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/subscription/' . $subId . '/payments');
@@ -98,17 +88,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        
+
         $paymentResponse = curl_exec($ch);
         $paymentHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        
+
         $paymentData = [];
         if ($paymentHttpCode === 200) {
             $paymentResponseData = json_decode($paymentResponse, true);
             $paymentData = $paymentResponseData['data'] ?? [];
         }
-        
+
         echo json_encode([
             'subscription' => $subscriptionData,
             'payments' => $paymentData
@@ -120,10 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 }
 
 // Function to get Access Token
-function getAccessToken() {
+function getAccessToken()
+{
     // Create Basic Auth header
     $auth = base64_encode(PAYHERE_APP_ID . ':' . PAYHERE_APP_SECRET);
-    
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/oauth/token');
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -136,27 +127,28 @@ function getAccessToken() {
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    
+
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error = curl_error($ch);
     curl_close($ch);
-    
+
     if ($httpCode === 200) {
         $data = json_decode($response, true);
         return $data['access_token'] ?? null;
     }
-    
+
     error_log("PayHere OAuth Error: HTTP $httpCode - $error");
     return null;
 }
 
 // Function to get subscription payment history
-function getSubscriptionHistory($subscriptionId, $accessToken = null) {
+function getSubscriptionHistory($subscriptionId, $accessToken = null)
+{
     if (!$accessToken || empty($subscriptionId)) {
         return array();
     }
-    
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/subscription/' . $subscriptionId . '/transactions');
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -168,23 +160,24 @@ function getSubscriptionHistory($subscriptionId, $accessToken = null) {
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    
+
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+
     if ($httpCode === 200) {
         $data = json_decode($response, true);
         if (isset($data['data']) && is_array($data['data'])) {
             return $data['data'];
         }
     }
-    
+
     return array();
 }
 
 // Function to get all subscriptions from PayHere
-function getAllSubscriptions($accessToken = null) {
+function getAllSubscriptions($accessToken = null)
+{
     if (!$accessToken) {
         return array(
             'success' => false,
@@ -192,7 +185,7 @@ function getAllSubscriptions($accessToken = null) {
             'subscriptions' => array()
         );
     }
-    
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/subscription');
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -204,15 +197,15 @@ function getAllSubscriptions($accessToken = null) {
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    
+
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error = curl_error($ch);
     curl_close($ch);
-    
+
     if ($httpCode === 200) {
         $data = json_decode($response, true);
-        
+
         if (isset($data['status']) && $data['status'] == 1 && isset($data['data'])) {
             return array(
                 'success' => true,
@@ -227,7 +220,7 @@ function getAllSubscriptions($accessToken = null) {
             );
         }
     }
-    
+
     return array(
         'success' => false,
         'message' => 'HTTP ' . $httpCode . ': ' . $error,
@@ -262,7 +255,9 @@ ob_start();
         <div class="flex items-start">
             <div class="flex-shrink-0">
                 <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd" />
                 </svg>
             </div>
             <div class="ml-3">
@@ -284,8 +279,10 @@ ob_start();
     <?php if (!$accessToken): ?>
         <!-- No Access Token -->
         <div class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 4v2m0-14V5m0 4V7m0 4V9m6-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4v2m0 4v2m0-14V5m0 4V7m0 4V9m6-2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">Connection Error</h3>
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Unable to connect to PayHere API</p>
@@ -293,11 +290,14 @@ ob_start();
     <?php elseif (empty($allSubscriptions)): ?>
         <!-- Empty State -->
         <div class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">No Subscriptions Found</h3>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">There are no subscriptions in your PayHere account yet</p>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">There are no subscriptions in your PayHere account yet
+            </p>
         </div>
     <?php else: ?>
         <!-- Success Message -->
@@ -305,12 +305,15 @@ ob_start();
             <div class="flex items-start">
                 <div class="flex-shrink-0">
                     <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd" />
                     </svg>
                 </div>
                 <div class="ml-3">
                     <h3 class="text-sm font-medium text-green-800 dark:text-green-200">Successfully Loaded</h3>
-                    <p class="mt-1 text-sm text-green-700 dark:text-green-300">Found <strong><?php echo count($allSubscriptions); ?></strong> subscription(s)</p>
+                    <p class="mt-1 text-sm text-green-700 dark:text-green-300">Found
+                        <strong><?php echo count($allSubscriptions); ?></strong> subscription(s)</p>
                 </div>
             </div>
         </div>
@@ -331,7 +334,7 @@ ob_start();
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                    <?php foreach ($allSubscriptions as $subscription): 
+                    <?php foreach ($allSubscriptions as $subscription):
                         $status = strtolower($subscription['status'] ?? 'unknown');
                         if ($status === 'active') {
                             $badgeClass = 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-300 dark:border-green-700';
@@ -342,44 +345,47 @@ ob_start();
                         } else {
                             $badgeClass = 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600';
                         }
-                        
+
                         $customer = $subscription['customer'] ?? array();
                         $firstName = $customer['fist_name'] ?? $customer['first_name'] ?? '';
                         $lastName = $customer['last_name'] ?? '';
                         $subId = $subscription['subscription_id'] ?? '';
-                    ?>
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                        <td class="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
-                            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                                <?php echo htmlspecialchars(substr($subId, 0, 12)); ?>
-                            </code>
-                        </td>
-                        <td class="px-4 py-3 text-gray-900 dark:text-gray-100">
-                            <?php echo htmlspecialchars($firstName . ' ' . $lastName); ?>
-                        </td>
-                        <td class="px-4 py-3 text-gray-600 dark:text-gray-400 text-xs">
-                            <?php echo htmlspecialchars($customer['email'] ?? 'N/A'); ?>
-                        </td>
-                        <td class="px-4 py-3 text-gray-900 dark:text-gray-100">
-                            <?php echo htmlspecialchars($subscription['description'] ?? 'N/A'); ?>
-                        </td>
-                        <td class="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
-                            LKR <?php echo number_format($subscription['amount'] ?? 0, 2); ?>
-                        </td>
-                        <td class="px-4 py-3 text-gray-600 dark:text-gray-400 text-xs">
-                            <?php echo htmlspecialchars($subscription['recurring'] ?? 'N/A'); ?>
-                        </td>
-                        <td class="px-4 py-3">
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold <?php echo $badgeClass; ?>">
-                                <?php echo htmlspecialchars(ucfirst($status)); ?>
-                            </span>
-                        </td>
-                        <td class="px-4 py-3">
-                            <button onclick="openHistoryModal('<?php echo htmlspecialchars($subId); ?>', '<?php echo htmlspecialchars($firstName . ' ' . $lastName); ?>', '<?php echo htmlspecialchars($subscription['date'] ?? 'now'); ?>', <?php echo $subscription['amount'] ?? 0; ?>)" class="inline-block px-4 py-2 bg-tc text-white rounded-lg hover:bg-tc-600 transition-colors text-xs font-semibold">
-                                History
-                            </button>
-                        </td>
-                    </tr>
+                        ?>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                            <td class="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
+                                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                                        <?php echo htmlspecialchars(substr($subId, 0, 12)); ?>
+                                    </code>
+                            </td>
+                            <td class="px-4 py-3 text-gray-900 dark:text-gray-100">
+                                <?php echo htmlspecialchars($firstName . ' ' . $lastName); ?>
+                            </td>
+                            <td class="px-4 py-3 text-gray-600 dark:text-gray-400 text-xs">
+                                <?php echo htmlspecialchars($customer['email'] ?? 'N/A'); ?>
+                            </td>
+                            <td class="px-4 py-3 text-gray-900 dark:text-gray-100">
+                                <?php echo htmlspecialchars($subscription['description'] ?? 'N/A'); ?>
+                            </td>
+                            <td class="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
+                                LKR <?php echo number_format($subscription['amount'] ?? 0, 2); ?>
+                            </td>
+                            <td class="px-4 py-3 text-gray-600 dark:text-gray-400 text-xs">
+                                <?php echo htmlspecialchars($subscription['recurring'] ?? 'N/A'); ?>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span
+                                    class="inline-block px-3 py-1 rounded-full text-xs font-semibold <?php echo $badgeClass; ?>">
+                                    <?php echo htmlspecialchars(ucfirst($status)); ?>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <button
+                                    onclick="openHistoryModal('<?php echo htmlspecialchars($subId); ?>', '<?php echo htmlspecialchars($firstName . ' ' . $lastName); ?>', '<?php echo htmlspecialchars($subscription['date'] ?? 'now'); ?>', <?php echo $subscription['amount'] ?? 0; ?>)"
+                                    class="inline-block px-4 py-2 bg-tc text-white rounded-lg hover:bg-tc-600 transition-colors text-xs font-semibold">
+                                    History
+                                </button>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
@@ -387,31 +393,37 @@ ob_start();
 
         <!-- Table Footer Stats -->
         <div class="mt-8 flex flex-wrap gap-4 text-sm">
-            <?php 
-                $activeCount = 0;
-                $inactiveCount = 0;
-                $pendingCount = 0;
-                foreach ($allSubscriptions as $sub) {
-                    $status = strtolower($sub['status'] ?? 'unknown');
-                    if ($status === 'active') $activeCount++;
-                    elseif ($status === 'inactive' || $status === 'failed') $inactiveCount++;
-                    elseif ($status === 'pending') $pendingCount++;
-                }
+            <?php
+            $activeCount = 0;
+            $inactiveCount = 0;
+            $pendingCount = 0;
+            foreach ($allSubscriptions as $sub) {
+                $status = strtolower($sub['status'] ?? 'unknown');
+                if ($status === 'active')
+                    $activeCount++;
+                elseif ($status === 'inactive' || $status === 'failed')
+                    $inactiveCount++;
+                elseif ($status === 'pending')
+                    $pendingCount++;
+            }
             ?>
             <div class="flex items-center gap-2">
                 <span class="inline-block w-3 h-3 rounded-full bg-green-500"></span>
-                <span class="text-gray-600 dark:text-gray-400"><strong class="text-gray-900 dark:text-white"><?php echo $activeCount; ?></strong> Active</span>
+                <span class="text-gray-600 dark:text-gray-400"><strong
+                        class="text-gray-900 dark:text-white"><?php echo $activeCount; ?></strong> Active</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="inline-block w-3 h-3 rounded-full bg-yellow-500"></span>
-                <span class="text-gray-600 dark:text-gray-400"><strong class="text-gray-900 dark:text-white"><?php echo $pendingCount; ?></strong> Pending</span>
+                <span class="text-gray-600 dark:text-gray-400"><strong
+                        class="text-gray-900 dark:text-white"><?php echo $pendingCount; ?></strong> Pending</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="inline-block w-3 h-3 rounded-full bg-red-500"></span>
-                <span class="text-gray-600 dark:text-gray-400"><strong class="text-gray-900 dark:text-white"><?php echo $inactiveCount; ?></strong> Inactive</span>
+                <span class="text-gray-600 dark:text-gray-400"><strong
+                        class="text-gray-900 dark:text-white"><?php echo $inactiveCount; ?></strong> Inactive</span>
             </div>
         </div>
-        
+
         <script>
             function openHistoryModal(subId, customerName, startDate, amount) {
                 // Show loading state
@@ -435,16 +447,16 @@ ob_start();
                         </div>
                     </div>
                 `;
-                
+
                 // Remove existing modal if any
                 let existingModal = document.getElementById('historyModal');
                 if (existingModal) {
                     existingModal.remove();
                 }
-                
+
                 // Insert modal
                 document.body.insertAdjacentHTML('beforeend', modalHTML);
-                
+
                 // Fetch subscription details from server
                 fetch('?action=getSubscriptionDetails&sub_id=' + subId)
                     .then(response => response.json())
@@ -453,31 +465,31 @@ ob_start();
                             showModalError(data.error);
                             return;
                         }
-                        
+
                         const sub = data.subscription;
                         const payments = data.payments || [];
-                        
+
                         // Extract customer information
                         const firstName = sub.customer?.fist_name || '';
                         const lastName = sub.customer?.last_name || '';
                         const custName = firstName + ' ' + lastName;
                         const custEmail = sub.customer?.email || '-';
                         const custPhone = sub.customer?.phone || '-';
-                        
+
                         // Extract billing information
                         const billingCity = sub.customer?.delivery_details?.city || '-';
                         const billingCountry = sub.customer?.delivery_details?.country || 'Sri Lanka';
-                        
+
                         // Format date
-                        const dateStr = new Date(sub.date).toLocaleString('en-US', { 
-                            year: 'numeric', month: 'short', day: 'numeric', 
-                            hour: '2-digit', minute: '2-digit' 
+                        const dateStr = new Date(sub.date).toLocaleString('en-US', {
+                            year: 'numeric', month: 'short', day: 'numeric',
+                            hour: '2-digit', minute: '2-digit'
                         });
-                        
+
                         // Get status
                         const status = sub.status || 'PENDING';
                         const statusText = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-                        
+
                         // Build items HTML
                         let itemsHTML = '';
                         let totalAmount = 0;
@@ -492,7 +504,7 @@ ob_start();
                                 totalAmount = item.total_price;
                             });
                         }
-                        
+
                         // Build payments table
                         let paymentsHTML = '<tr class="border-b border-gray-200 dark:border-gray-700"><td colspan="4" class="text-center py-3 text-gray-600 dark:text-gray-400">No authorized payments yet</td></tr>';
                         if (payments.length > 0) {
@@ -511,7 +523,7 @@ ob_start();
                                 `;
                             }).join('');
                         }
-                        
+
                         // Create detailed modal content
                         let detailedModalHTML = `
                             <div id="historyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -617,7 +629,7 @@ ob_start();
                                 </div>
                             </div>
                         `;
-                        
+
                         // Replace modal
                         let existingModal = document.getElementById('historyModal');
                         if (existingModal) {
@@ -630,7 +642,7 @@ ob_start();
                         showModalError('Failed to load subscription details. Please try again.');
                     });
             }
-            
+
             function showModalError(message) {
                 let errorModalHTML = `
                     <div id="historyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -649,16 +661,16 @@ ob_start();
                 }
                 document.body.insertAdjacentHTML('beforeend', errorModalHTML);
             }
-            
+
             function closeHistoryModal() {
                 let modal = document.getElementById('historyModal');
                 if (modal) {
                     modal.remove();
                 }
             }
-            
+
             // Close modal when clicking outside
-            document.addEventListener('click', function(event) {
+            document.addEventListener('click', function (event) {
                 let modal = document.getElementById('historyModal');
                 if (modal && event.target === modal) {
                     closeHistoryModal();
