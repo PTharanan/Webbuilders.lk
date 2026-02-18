@@ -2,6 +2,17 @@
 session_start();
 require_once 'dbConnect.php';
 
+// Check if user is already logged in
+if (isset($_SESSION['user_id'])) {
+  // Redirect based on role
+  if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'staff') {
+    header('Location: attendance.php');
+  } else {
+    header('Location: admindash.php');
+  }
+  exit();
+}
+
 $error = '';
 $success = '';
 
@@ -22,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Check if account is active
         if ($user['status'] !== 'active') {
           $error = 'Your account is currently inactive. Please contact the administrator.';
-        } 
+        }
         // Check if password matches (try both hashed and plain text)
         else if (password_verify($password, $user['password']) || $password === $user['password']) {
           $_SESSION['user_id'] = $user['id'];

@@ -1,19 +1,9 @@
 <?php
+require_once 'auth_check.php';
 /**
  * Subscription Plan Settings
  * Manage pricing plans and URLs for domain and hosting packages
  */
-
-// Start session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
 
 // Include database connection FIRST
 require_once 'dbConnect.php';
@@ -121,7 +111,8 @@ ob_start();
 <div class="flex flex-col gap-8">
     <!-- Success/Error Message -->
     <?php if ($message): ?>
-        <div class="fade-in p-4 rounded-lg flex items-center gap-3 <?php echo $messageType === 'success' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'; ?>">
+        <div
+            class="fade-in p-4 rounded-lg flex items-center gap-3 <?php echo $messageType === 'success' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'; ?>">
             <i class="fas fa-<?php echo $messageType === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
             <span><?php echo $message; ?></span>
         </div>
@@ -135,14 +126,14 @@ ob_start();
                 <div class="mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white"><?php echo $planName; ?></h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        <?php 
-                            $descriptions = [
-                                'Starter Package' => 'Unmanaged Server',
-                                'Light Package' => 'Managed Server',
-                                'Pro Package' => 'Resellers Special',
-                                'Domain Only' => 'Domain Registration'
-                            ];
-                            echo $descriptions[$planName] ?? '';
+                        <?php
+                        $descriptions = [
+                            'Starter Package' => 'Unmanaged Server',
+                            'Light Package' => 'Managed Server',
+                            'Pro Package' => 'Resellers Special',
+                            'Domain Only' => 'Domain Registration'
+                        ];
+                        echo $descriptions[$planName] ?? '';
                         ?>
                     </p>
                 </div>
@@ -159,17 +150,13 @@ ob_start();
                         </label>
                         <div class="relative">
                             <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">LKR</span>
-                            <input
-                                type="number"
-                                name="price"
-                                step="0.01"
-                                min="0"
+                            <input type="number" name="price" step="0.01" min="0"
                                 value="<?php echo number_format($planData['price'], 2, '.', ''); ?>"
                                 class="w-full pl-12 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-tc-500"
-                                required
-                            >
+                                required>
                         </div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Current: LKR <span class="font-semibold"><?php echo number_format($planData['price'], 2); ?></span>/year</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Current: LKR <span
+                                class="font-semibold"><?php echo number_format($planData['price'], 2); ?></span>/year</p>
                     </div>
 
                     <!-- URL Input -->
@@ -177,35 +164,32 @@ ob_start();
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             <i class="fas fa-link mr-2 text-tc-500"></i>Checkout URL
                         </label>
-                        <input
-                            type="url"
-                            name="checkout_url"
+                        <input type="url" name="checkout_url"
                             value="<?php echo htmlspecialchars($planData['checkout_url']); ?>"
                             placeholder="https://payhere.lk/payment/..."
                             class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-tc-500 text-sm"
-                            required
-                        >
+                            required>
                         <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">Set your PayHere checkout link</p>
                     </div>
 
                     <!-- Status Badge -->
                     <div class="pt-2">
                         <?php if ($planData['id']): ?>
-                            <span class="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs font-semibold rounded-full">
+                            <span
+                                class="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs font-semibold rounded-full">
                                 <i class="fas fa-check mr-1"></i>Configured
                             </span>
                         <?php else: ?>
-                            <span class="inline-block px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 text-xs font-semibold rounded-full">
+                            <span
+                                class="inline-block px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 text-xs font-semibold rounded-full">
                                 <i class="fas fa-clock mr-1"></i>Not Set
                             </span>
                         <?php endif; ?>
                     </div>
 
                     <!-- Save Button -->
-                    <button
-                        type="submit"
-                        class="w-full mt-6 py-2 px-4 btn-premium text-white font-bold rounded-lg hover:shadow-lg transition duration-300 flex items-center justify-center gap-2"
-                    >
+                    <button type="submit"
+                        class="w-full mt-6 py-2 px-4 btn-premium text-white font-bold rounded-lg hover:shadow-lg transition duration-300 flex items-center justify-center gap-2">
                         <i class="fas fa-save"></i>Save Changes
                     </button>
                 </form>
