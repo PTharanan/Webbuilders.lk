@@ -261,23 +261,73 @@
                 Return to Store
             </a>
         </div>
+
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Get PayHere parameters from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentId = urlParams.get('payment_id');
+            const orderId = urlParams.get('order_id');
+            const statusCode = urlParams.get('status_code');
+
             // Try to load any stored checkout data
             const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
+
             if (checkoutData) {
+                // Update display with actual transaction data if available
+                if (paymentId) {
+                    document.getElementById('displayTxn').textContent = paymentId;
+                } else {
+                    const txnId = 'TXN-' + Math.floor(Math.random() * 1000000000);
+                    document.getElementById('displayTxn').textContent = txnId;
+                }
+
                 if (checkoutData.total) {
                     document.getElementById('displayAmount').textContent = 'LKR ' + parseFloat(checkoutData.total).toLocaleString(undefined, { minimumFractionDigits: 2 });
                 }
 
-                // Randomly generate a transaction ID for the demo if not present
-                const txnId = 'TXN-' + Math.floor(Math.random() * 1000000000);
-                document.getElementById('displayTxn').textContent = txnId;
+                // Store in database via AJAX
+                // Enrich checkout data with payment info
+                // Enrich checkout data with payment info
+                const dataToSave = {
+                    ...checkoutData,
+                    payment_id: paymentId || (urlParams.get('payment_id') ? urlParams.get('payment_id') : 'SUCCESS-MANUAL'),
+                    order_id: orderId || checkoutData.order_id || 'ORD-' + Date.now(),
+                    status_code: statusCode || '2'
+                };
 
-                // Clear checkout data after showing success
-                // localStorage.removeItem('checkoutData');
+                console.log('Attempting to save checkout data:', dataToSave);
+
+                fetch('save_checkout.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataToSave)
+                })
+                    .then(response => {
+                        console.log('Raw response status:', response.status);
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Server response:', data);
+                        if (data.status === 'success') {
+                            console.log('Checkout data saved successfully to DB');
+                            sessionStorage.setItem('checkoutSaved', 'true');
+                        } else {
+                            console.error('Server reported error:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error during save:', error);
+                    });
+            } else {
+                console.log('No checkout data found in local storage');
             }
         });
     </script>
