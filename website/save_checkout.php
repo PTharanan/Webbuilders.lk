@@ -11,6 +11,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($data['domain']) && isset($data['plan'])) {
         try {
+            $payment_id = isset($data['payment_id']) ? $data['payment_id'] : '';
+            $order_id = isset($data['order_id']) ? $data['order_id'] : '';
+
+            // Only skip if THIS specific order is already marked as successful with THIS payment ID
+            // This prevents page reloads from reprocessing, but allows the update if it's currently 'PENDING'
+            if ($payment_id !== 'PENDING' && !empty($payment_id)) {
+                $check_sql = "SELECT id FROM checkout WHERE order_id = ? AND payment_id = ?";
+                $check_stmt = $conn->prepare($check_sql);
+                $check_stmt->execute([$order_id, $payment_id]);
+                if ($check_stmt->fetch()) {
+                    echo json_encode(['status' => 'success', 'message' => 'Already processed']);
+                    exit;
+                }
+            }
+
             $sql = "INSERT INTO checkout (payment_id, order_id, domain, plan, plan_price, domain_price, total_price) 
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                     ON DUPLICATE KEY UPDATE 

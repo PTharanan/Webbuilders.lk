@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body,
         html {
@@ -204,7 +205,7 @@
 </head>
 
 <body>
-    <div class="success-card">
+    <div class="success-card" id="receiptCard">
         <div class="text-center">
             <div class="success-icon-wrapper">
                 <div class="success-icon-inner">
@@ -252,7 +253,7 @@
         </div>
 
         <div class="flex flex-col gap-2">
-            <button class="btn-black" onclick="window.print()">
+            <button class="btn-black" onclick="downloadPDF()">
                 <i class="fas fa-download"></i>
                 Download Receipt
             </button>
@@ -330,6 +331,50 @@
                 console.log('No checkout data found in local storage');
             }
         });
+
+        function downloadPDF() {
+            const element = document.getElementById('receiptCard');
+            const downloadBtn = document.querySelector('.btn-black');
+            const returnBtn = document.querySelector('.btn-white');
+
+            // 1. Prepare for capture
+            downloadBtn.style.visibility = 'hidden';
+            returnBtn.style.visibility = 'hidden';
+
+            // Apply high-contrast colors directly to the element temporarily
+            const originalColors = new Map();
+            const elements = element.querySelectorAll('*');
+            elements.forEach(el => {
+                originalColors.set(el, el.style.color);
+                if (el.classList.contains('summary-label') || el.classList.contains('text-gray-500')) {
+                    el.style.setProperty('color', '#333333', 'important');
+                } else if (!el.classList.contains('success-icon-inner') && !el.classList.contains('fa-check')) {
+                    el.style.setProperty('color', '#000000', 'important');
+                }
+            });
+
+            const opt = {
+                margin: 15,
+                filename: 'WEBbuilders_Receipt.pdf',
+                image: { type: 'jpeg', quality: 1.0 },
+                html2canvas: { scale: 3, useCORS: true, backgroundColor: '#faf3f3ff' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // 2. Generate PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                // 3. Restore styles
+                elements.forEach(el => {
+                    el.style.color = originalColors.get(el);
+                });
+                downloadBtn.style.visibility = 'visible';
+                returnBtn.style.visibility = 'visible';
+            }).catch(err => {
+                console.error(err);
+                downloadBtn.style.visibility = 'visible';
+                returnBtn.style.visibility = 'visible';
+            });
+        }
     </script>
 
 </body>

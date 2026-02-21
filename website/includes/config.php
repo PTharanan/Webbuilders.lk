@@ -1,14 +1,13 @@
 <?php
-    // Database configuration
-    define('DB_HOST', 'webbuilders.lk');
-    define('DB_USERNAME', 'speedmart_webbuilders');
-    define('DB_PASSWORD', '?]@FX6?]8U^-8~Mc');
-    define('DB_NAME', 'speedmart_webbuilders');
+// Database configuration
+define('DB_HOST', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'webbuilders');
 
-    define('BASE_URL', 'https://adminwebbuilders.speedmart.lk/');    
+define('BASE_URL', 'https://adminwebbuilders.webbuilders.lk/');
 
-    // Start session
-    if (!session_id()) {
-        session_start();
-    }
-?>
+// Start session
+if (!session_id()) {
+    session_start();
+}
