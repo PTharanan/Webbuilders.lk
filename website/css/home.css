@@ -29,24 +29,32 @@ body {
     padding: 5px 10%;
     font-size: 13px;
 }
+
 /* Social media icons kulla gap kondu vara */
 .social-icons-right a {
-    color: #fff;           /* Icons white color-la irukka */
+    color: #fff;
+    /* Icons white color-la irukka */
     text-decoration: none;
-    margin-left: 20px;     /* Ithu thaan icons-ku naduvula gap create pannum */
-    display: inline-block; /* Margin correct-ah apply aaga */
+    margin-left: 20px;
+    /* Ithu thaan icons-ku naduvula gap create pannum */
+    display: inline-block;
+    /* Margin correct-ah apply aaga */
 }
 
 /* Contact info (Phone/Email) kulla gap kondu vara */
 .contact-info-left span {
-    margin-right: 15px;    /* Phone matrum Email-ku naduvula gap */
+    margin-right: 15px;
+    /* Phone matrum Email-ku naduvula gap */
 }
+
 /* --- 🆕 ADDED: Social Icons White Color Update --- */
 
 /* Social media icons (Facebook, Instagram, LinkedIn) white color */
 .social-icons-right a i {
-    color: #ffffff !important; /* Icons-ah pure white-ah mathum */
-    transition: 0.3s ease;     /* Smooth hover effect */
+    color: #ffffff !important;
+    /* Icons-ah pure white-ah mathum */
+    transition: 0.3s ease;
+    /* Smooth hover effect */
 }
 
 /* Mouse mela veikkum pothu light effect (Optional) */
@@ -59,10 +67,11 @@ body {
     width: 100%;
     background: #fff;
     padding: 12px 0;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 5px solid #FF6600;
 }
 
 .nav-container {
@@ -173,61 +182,195 @@ body {
     top: 0;
     right: -100%;
     width: 85%;
-    max-width: 400px;
+    max-width: 350px;
     height: 100%;
     background: #fff;
     z-index: 10000;
     transition: right 0.4s ease;
-    padding: 80px 25px 40px;
+    padding: 60px 0 40px;
     overflow-y: auto;
-    box-shadow: -5px 0 20px rgba(0,0,0,0.1);
-    border-left: 3px solid var(--brand-orange);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
 }
 
 .mobile-overlay.active {
     right: 0;
+    display: flex;
 }
 
 .close-overlay {
     position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 36px;
-    color: #ff6600;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: #00208a;
     cursor: pointer;
-    background: white;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     z-index: 10001;
-}
-
-.close-overlay:hover {
-    color: #ff944d;
 }
 
 .mobile-links {
     list-style: none;
-    padding-top: 20px;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.mobile-links li {
+    border-bottom: 1px solid #f2f5f9;
 }
 
 .mobile-links a {
     display: block;
-    font-size: 20px;
-    padding: 15px 0;
-    color: #333;
+    font-size: 16.5px;
+    padding: 18px 25px;
+    color: #00208a;
     text-decoration: none;
-    border-bottom: 1px solid #eee;
+    font-weight: 600;
     transition: all 0.3s;
 }
 
 .mobile-links a:hover {
     color: var(--brand-orange);
-    padding-left: 10px;
+    background: #f8faff;
+}
+
+.mobile-nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile-nav-item a {
+    flex: 1;
+}
+
+.toggle-sub-menu {
+    font-size: 14px;
+    color: #00208a;
+    cursor: pointer;
+    padding: 20px 25px;
+    transition: transform 0.3s ease;
+}
+
+.mobile-has-dropdown.active .toggle-sub-menu {
+    transform: rotate(180deg);
+}
+
+.mobile-sub-menu {
+    list-style: none;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #fff;
+}
+
+.mobile-has-dropdown.active .mobile-sub-menu {
+    max-height: 2000px;
+    border-top: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.mobile-sub-menu li {
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.mobile-sub-menu li:last-child {
+    border-bottom: none;
+}
+
+.mobile-sub-menu li a {
+    font-size: 15px;
+    padding: 12px 20px;
+    color: #444 !important;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.mobile-sub-menu li a i {
+    width: 25px;
+    font-size: 16px;
+    color: #777 !important;
+    opacity: 0.8;
+}
+
+.mobile-sub-menu li a:hover {
+    color: var(--brand-orange) !important;
+    background: #fafafa;
+}
+
+/* --- Mobile Contact Footer --- */
+.mobile-contact-footer {
+    padding: 30px 25px;
+    border-top: 1px solid #eee;
+    margin-top: auto;
+}
+
+.mobile-phone-wrap {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.phone-ico-box {
+    width: 45px;
+    height: 45px;
+    background: #fff;
+    border: 1px solid #ff6a00;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff6a00;
+    font-size: 18px;
+    box-shadow: 0 4px 10px rgba(255, 106, 0, 0.15);
+}
+
+.phone-num {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+}
+
+.mobile-chat-widget {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 30px;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+
+.chat-icon {
+    width: 35px;
+    height: 35px;
+    background: #9d81cd;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.chat-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
 }
 
 /* ==================== 🚀 HERO SECTION ==================== */
@@ -363,7 +506,7 @@ body {
     border-radius: 5px;
     height: 55px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .exact-input-group input {
@@ -524,7 +667,7 @@ body {
 }
 
 .service-card:hover {
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
     z-index: 10;
     border-radius: 5px;
     transform: translateY(-10px);
@@ -677,7 +820,7 @@ body {
     font-size: 24px;
     color: #ddd;
     transition: 0.3s;
-    background: rgba(0,0,0,0.05);
+    background: rgba(0, 0, 0, 0.05);
     width: 50px;
     height: 50px;
     display: flex;
@@ -703,7 +846,7 @@ body {
     max-width: 300px;
     height: auto;
     border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
 }
 
@@ -839,12 +982,12 @@ body {
     font-size: 18px;
     text-decoration: none;
     transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .social-circle:hover {
     transform: translateY(-3px) rotate(5deg);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     background: #ff5500;
     color: white;
 }
@@ -872,13 +1015,13 @@ body {
     position: fixed;
     bottom: 30px;
     left: 30px;
-    background: linear-gradient(135deg,#A682D4, #A682D4);
+    background: linear-gradient(135deg, #A682D4, #A682D4);
     color: white;
     text-decoration: none;
     padding: 12px 25px;
     border-radius: 50px;
     box-shadow: 0 10px 25px rgba(255, 106, 0, 0.4);
-    z-index: 9999;
+    z-index: 11000;
     transition: all 0.3s ease;
 }
 
@@ -911,56 +1054,203 @@ body {
 }
 
 /* ==================== ✨ ANIMATIONS ==================== */
-@keyframes floating { 
-    0%, 100% { transform: translateY(0); } 
-    50% { transform: translateY(-20px); } 
+@keyframes floating {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 /* ==================== 📱 MOBILE RESPONSIVE ==================== */
 
 /* Tablet View (768px கீழ்) */
 @media (max-width: 768px) {
+
     /* 1. TOP BAR HIDE */
-    .top-bar { display: none !important; }
-    
+    .top-bar {
+        display: none !important;
+    }
+
     /* 2. NAVBAR FIX */
-    .navbar { padding: 0 !important; height: 70px; }
-    .nav-container { width: 100% !important; padding: 0 20px !important; justify-content: space-between !important; }
-    .nav-links, .contact-box { display: none !important; }
-    .mobile-menu-btn { display: flex !important; margin-left: 0 !important; }
-    .logo img { height: 70x !important; max-height: 70px !important; }
-    
+    .navbar {
+        padding: 0 !important;
+        height: 70px;
+    }
+
+    .nav-container {
+        width: 100% !important;
+        padding: 0 20px !important;
+        justify-content: space-between !important;
+    }
+
+    .nav-links,
+    .contact-box {
+        display: none !important;
+    }
+
+    .mobile-menu-btn {
+        display: flex !important;
+        margin-left: 0 !important;
+    }
+
+    .logo img {
+        height: 70x !important;
+        max-height: 70px !important;
+    }
+
     /* 3. HERO SECTION FIX */
-    .hero-section { padding: 20px 0 !important; }
-    .hero-container { flex-direction: column !important; min-height: auto !important; gap: 30px !important; text-align: center !important; }
-    .hero-content { max-width: 100% !important; text-align: center !important; padding: 0 15px !important; }
-    #header-text { font-size: 36px !important; line-height: 1.2 !important; margin-bottom: 15px !important; text-align: center !important; }
-    .sub-text { font-size: 16px !important; line-height: 1.5 !important; margin-bottom: 25px !important; text-align: center !important; padding: 0 10px !important; }
-    .btn-contact { width: 100% !important; max-width: 250px !important; padding: 15px 30px !important; font-size: 14px !important; margin: 0 auto !important; display: block !important; }
-    .hero-image { justify-content: center !important; width: 100% !important; }
-    .hero-image img { max-width: 300px !important; width: 90% !important; height: auto !important; }
-    
+    .hero-section {
+        padding: 20px 0 !important;
+    }
+
+    .hero-container {
+        flex-direction: column !important;
+        min-height: auto !important;
+        gap: 30px !important;
+        text-align: center !important;
+    }
+
+    .hero-content {
+        max-width: 100% !important;
+        text-align: center !important;
+        padding: 0 15px !important;
+    }
+
+    #header-text {
+        font-size: 36px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 15px !important;
+        text-align: center !important;
+    }
+
+    .sub-text {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        margin-bottom: 25px !important;
+        text-align: center !important;
+        padding: 0 10px !important;
+    }
+
+    .btn-contact {
+        width: 100% !important;
+        max-width: 250px !important;
+        padding: 15px 30px !important;
+        font-size: 14px !important;
+        margin: 0 auto !important;
+        display: block !important;
+    }
+
+    .hero-image {
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    .hero-image img {
+        max-width: 300px !important;
+        width: 90% !important;
+        height: auto !important;
+    }
+
     /* 4. ABOUT SECTION FIX */
-    .about-exact-section { padding: 40px 0 !important; }
-    .about-exact-container { flex-direction: column !important; padding: 30px 20px !important; border-width: 5px !important; text-align: center !important; }
-    .side-image { display: none !important; }
-    .about-exact-content { padding: 0 !important; width: 100% !important; }
-    .exact-title { font-size: 28px !important; text-align: center !important; margin-bottom: 15px !important; }
-    .exact-para { font-size: 14px !important; text-align: justify !important; line-height: 1.6 !important; padding: 0 5px !important; }
-    .exact-orange-box { padding: 20px !important; border-radius: 20px !important; }
-    .box-label { font-size: 16px !important; text-align: center !important; }
-    .exact-input-group { flex-direction: column !important; height: auto !important; }
-    .exact-input-group input { width: 100% !important; padding: 15px !important; border-bottom: 1px solid #ddd !important; }
-    .exact-input-group button { width: 100% !important; padding: 15px !important; border-left: none !important; border-top: 1px solid #ddd !important; }
-    
+    .about-exact-section {
+        padding: 40px 0 !important;
+    }
+
+    .about-exact-container {
+        flex-direction: column !important;
+        padding: 30px 20px !important;
+        border-width: 5px !important;
+        text-align: center !important;
+    }
+
+    .side-image {
+        display: none !important;
+    }
+
+    .about-exact-content {
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    .exact-title {
+        font-size: 28px !important;
+        text-align: center !important;
+        margin-bottom: 15px !important;
+    }
+
+    .exact-para {
+        font-size: 14px !important;
+        text-align: justify !important;
+        line-height: 1.6 !important;
+        padding: 0 5px !important;
+    }
+
+    .exact-orange-box {
+        padding: 20px !important;
+        border-radius: 20px !important;
+    }
+
+    .box-label {
+        font-size: 16px !important;
+        text-align: center !important;
+    }
+
+    .exact-input-group {
+        flex-direction: column !important;
+        height: auto !important;
+    }
+
+    .exact-input-group input {
+        width: 100% !important;
+        padding: 15px !important;
+        border-bottom: 1px solid #ddd !important;
+    }
+
+    .exact-input-group button {
+        width: 100% !important;
+        padding: 15px !important;
+        border-left: none !important;
+        border-top: 1px solid #ddd !important;
+    }
+
     /* 5. SERVICES SECTION FIX */
-    .services-section { padding: 40px 15px !important; }
-    .service-container { flex-direction: column !important; text-align: center !important; gap: 30px !important; }
-    .service-container.reverse { flex-direction: column !important; }
-    .service-content { width: 100% !important; text-align: center !important; }
-    .service-content h2 { font-size: 28px !important; text-align: center !important; margin-bottom: 15px !important; }
-    .service-content p { font-size: 14px !important; text-align: justify !important; line-height: 1.6 !important; padding: 0 5px !important; }
-    
+    .services-section {
+        padding: 40px 15px !important;
+    }
+
+    .service-container {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 30px !important;
+    }
+
+    .service-container.reverse {
+        flex-direction: column !important;
+    }
+
+    .service-content {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    .service-content h2 {
+        font-size: 28px !important;
+        text-align: center !important;
+        margin-bottom: 15px !important;
+    }
+
+    .service-content p {
+        font-size: 14px !important;
+        text-align: justify !important;
+        line-height: 1.6 !important;
+        padding: 0 5px !important;
+    }
+
     /* 🔥 NEAT BUTTONS - SIDE-BY-SIDE FIX 🔥 */
     .service-buttons {
         display: flex !important;
@@ -974,7 +1264,7 @@ body {
         margin: 0 auto 25px auto !important;
         padding: 0 5px !important;
     }
-    
+
     .service-buttons a {
         flex: 1 !important;
         display: flex !important;
@@ -1008,48 +1298,178 @@ body {
         margin-right: 5px !important;
         font-size: 14px !important;
     }
-    
-    .service-image { width: 100% !important; justify-content: center !important; margin-top: 20px !important; }
-    .service-image img { max-width: 280px !important; width: 100% !important; border-radius: 10px !important; }
-    
+
+    .service-image {
+        width: 100% !important;
+        justify-content: center !important;
+        margin-top: 20px !important;
+    }
+
+    .service-image img {
+        max-width: 280px !important;
+        width: 100% !important;
+        border-radius: 10px !important;
+    }
+
     /* 6. WHAT WE DO SECTION FIX */
-    .what-we-do { padding: 40px 15px !important; border-radius: 20px !important; }
-    .title-area h2 { font-size: 28px !important; text-align: center !important; }
-    .services-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
-    .service-card { padding: 25px 20px !important; text-align: center !important; }
-    .card-header { flex-direction: column !important; text-align: center !important; gap: 10px !important; }
-    .card-header h3 { font-size: 18px !important; }
-    .service-card p { font-size: 14px !important; text-align: center !important; line-height: 1.6 !important; }
-    
+    .what-we-do {
+        padding: 40px 15px !important;
+        border-radius: 20px !important;
+    }
+
+    .title-area h2 {
+        font-size: 28px !important;
+        text-align: center !important;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    .service-card {
+        padding: 25px 20px !important;
+        text-align: center !important;
+    }
+
+    .card-header {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
+    }
+
+    .card-header h3 {
+        font-size: 18px !important;
+    }
+
+    .service-card p {
+        font-size: 14px !important;
+        text-align: center !important;
+        line-height: 1.6 !important;
+    }
+
     /* 7. TESTIMONIAL SECTION FIX */
-    .testimonial-section { border-width: 4px !important; margin: 20px 0 !important; }
-    .testimonial-container { padding: 30px 20px !important; min-height: auto !important; }
-    .header-area h2 { font-size: 28px !important; text-align: center !important; }
-    .slider-engine { height: auto !important; }
-    .single-slide.active { flex-direction: column-reverse !important; text-align: center !important; gap: 25px !important; position: relative !important; height: auto !important; }
-    .text-content { text-align: center !important; width: 100% !important; }
-    .review-text { font-size: 16px !important; line-height: 1.6 !important; text-align: center !important; }
-    .name-title { font-size: 22px !important; text-align: center !important; }
-    .visual-content img { display: none !important; }
-    .nav-arrows { justify-content: center !important; margin-top: 20px !important; }
-    
+    .testimonial-section {
+        border-width: 4px !important;
+        margin: 20px 0 !important;
+    }
+
+    .testimonial-container {
+        padding: 30px 20px !important;
+        min-height: auto !important;
+    }
+
+    .header-area h2 {
+        font-size: 28px !important;
+        text-align: center !important;
+    }
+
+    .slider-engine {
+        height: auto !important;
+    }
+
+    .single-slide.active {
+        flex-direction: column-reverse !important;
+        text-align: center !important;
+        gap: 25px !important;
+        position: relative !important;
+        height: auto !important;
+    }
+
+    .text-content {
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .review-text {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+        text-align: center !important;
+    }
+
+    .name-title {
+        font-size: 22px !important;
+        text-align: center !important;
+    }
+
+    .visual-content img {
+        display: none !important;
+    }
+
+    .nav-arrows {
+        justify-content: center !important;
+        margin-top: 20px !important;
+    }
+
     /* 8. PARTNER SECTION FIX */
-    .partner-wrapper { padding: 20px 15px !important; }
-    .partner-card { flex-direction: column !important; text-align: center !important; padding: 30px 20px !important; border-radius: 20px !important; }
-    .content-area h1 { font-size: 28px !important; text-align: center !important; }
-    .sub-heading { font-size: 16px !important; text-align: center !important; }
-    .description-text { font-size: 14px !important; text-align: justify !important; line-height: 1.6 !important; padding: 0 5px !important; }
-    .try-btn { width: 100% !important; max-width: 250px !important; padding: 15px !important; margin-top: 15px !important; font-size: 14px !important; }
-    
+    .partner-wrapper {
+        padding: 20px 15px !important;
+    }
+
+    .partner-card {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 30px 20px !important;
+        border-radius: 20px !important;
+    }
+
+    .content-area h1 {
+        font-size: 28px !important;
+        text-align: center !important;
+    }
+
+    .sub-heading {
+        font-size: 16px !important;
+        text-align: center !important;
+    }
+
+    .description-text {
+        font-size: 14px !important;
+        text-align: justify !important;
+        line-height: 1.6 !important;
+        padding: 0 5px !important;
+    }
+
+    .try-btn {
+        width: 100% !important;
+        max-width: 250px !important;
+        padding: 15px !important;
+        margin-top: 15px !important;
+        font-size: 14px !important;
+    }
+
     /* 9. FOOTER FIX */
-    .custom-site-footer { padding: 30px 20px !important; margin-top: 40px !important; text-align: center !important; }
-    .footer-bottom-row { font-size: 12px !important; line-height: 1.5 !important; }
-    
+    .custom-site-footer {
+        padding: 30px 20px !important;
+        margin-top: 40px !important;
+        text-align: center !important;
+    }
+
+    .footer-bottom-row {
+        font-size: 12px !important;
+        line-height: 1.5 !important;
+    }
+
     /* 10. STICKY BUTTON FIX */
-    .sticky-contact-btn { bottom: 20px !important; right: 20px !important; left: auto !important; padding: 15px !important; width: 50px !important; height: 50px !important; border-radius: 50% !important; }
-    .sticky-contact-btn span { display: none !important; }
-    .sticky-contact-btn i { margin: 0 !important; font-size: 18px !important; }
-    
+    .sticky-contact-btn {
+        bottom: 20px !important;
+        right: 20px !important;
+        left: auto !important;
+        padding: 15px !important;
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 50% !important;
+    }
+
+    .sticky-contact-btn span {
+        display: none !important;
+    }
+
+    .sticky-contact-btn i {
+        margin: 0 !important;
+        font-size: 18px !important;
+    }
+
     /* 11. IMAGE HIDE FOR MOBILE */
     .hero-image,
     .service-image,
@@ -1061,9 +1481,13 @@ body {
     .visual-content {
         display: none !important;
     }
-    
+
     /* Horizontal Scroll Prevention */
-    body { overflow-x: hidden !important; width: 100% !important; }
+    body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+
     .central-wrapper,
     .about-exact-container,
     .service-container,
@@ -1074,11 +1498,20 @@ body {
         padding-left: 15px !important;
         padding-right: 15px !important;
     }
-    
-    img { max-width: 100% !important; height: auto !important; }
-    
+
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
     /* Text Overflow Fix */
-    h1, h2, h3, p, a, span, div {
+    h1,
+    h2,
+    h3,
+    p,
+    a,
+    span,
+    div {
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
         white-space: normal !important;
@@ -1087,50 +1520,106 @@ body {
 
 /* Small Mobile View (480px) */
 @media (max-width: 480px) {
-    .service-buttons { gap: 8px !important; }
-    .service-buttons a:nth-child(1) { font-size: 12px !important; }
-    .service-buttons a:nth-child(2) { font-size: 10px !important; padding: 10px 5px !important; }
-    
-    .nav-container { padding: 0 15px !important; height: 60px !important; }
-    .logo img { height: 65px !important; }
-    #header-text { font-size: 30px !important; }
-    .sub-text { font-size: 14px !important; }
+    .service-buttons {
+        gap: 8px !important;
+    }
+
+    .service-buttons a:nth-child(1) {
+        font-size: 12px !important;
+    }
+
+    .service-buttons a:nth-child(2) {
+        font-size: 10px !important;
+        padding: 10px 5px !important;
+    }
+
+    .nav-container {
+        padding: 0 15px !important;
+        height: 60px !important;
+    }
+
+    .logo img {
+        height: 65px !important;
+    }
+
+    #header-text {
+        font-size: 30px !important;
+    }
+
+    .sub-text {
+        font-size: 14px !important;
+    }
+
     .exact-title,
     .service-content h2,
     .title-area h2,
     .header-area h2,
-    .content-area h1 { font-size: 24px !important; }
+    .content-area h1 {
+        font-size: 24px !important;
+    }
+
     .exact-para,
     .service-content p,
     .service-card p,
-    .description-text { font-size: 13px !important; }
+    .description-text {
+        font-size: 13px !important;
+    }
+
     .btn-contact,
     .service-buttons a,
-    .try-btn { padding: 12px 20px !important; font-size: 13px !important; }
+    .try-btn {
+        padding: 12px 20px !important;
+        font-size: 13px !important;
+    }
+
     .hero-image img,
-    .service-image img { max-width: 250px !important; }
-    .service-card { padding: 20px 15px !important; }
-    .footer-bottom-row { font-size: 11px !important; }
+    .service-image img {
+        max-width: 250px !important;
+    }
+
+    .service-card {
+        padding: 20px 15px !important;
+    }
+
+    .footer-bottom-row {
+        font-size: 11px !important;
+    }
 }
 
 /* Very Small Mobile (350px) */
 @media (max-width: 350px) {
-    #header-text { font-size: 26px !important; }
+    #header-text {
+        font-size: 26px !important;
+    }
+
     .exact-title,
-    .service-content h2 { font-size: 22px !important; }
+    .service-content h2 {
+        font-size: 22px !important;
+    }
+
     .btn-contact,
-    .service-buttons a { padding: 10px 15px !important; font-size: 12px !important; }
-    .service-buttons { gap: 10px !important; }
-    .nav-container { padding: 0 10px !important; }
+    .service-buttons a {
+        padding: 10px 15px !important;
+        font-size: 12px !important;
+    }
+
+    .service-buttons {
+        gap: 10px !important;
+    }
+
+    .nav-container {
+        padding: 0 10px !important;
+    }
 }
 
 /* Mobile View Mattum (Below 768px) */
 @media screen and (max-width: 768px) {
-    
+
     /* Navbar content-ah ore line-la vara veikka */
     .nav-container {
         display: flex;
-        justify-content: space-between; /* Logo left, Menu right */
+        justify-content: space-between;
+        /* Logo left, Menu right */
         align-items: center;
         width: 100%;
         padding: 10px 15px;
@@ -1138,29 +1627,35 @@ body {
 
     /* Logo size control */
     .logo img {
-        height: 40px; /* Resize logo for mobile */
+        height: 40px;
+        /* Resize logo for mobile */
         width: auto;
     }
 
     /* Mobile Menu Button (≡) alignment */
     .mobile-menu-btn {
-        display: block; /* Mobile-la mattum theriyum */
+        display: block;
+        /* Mobile-la mattum theriyum */
         font-size: 28px;
-        color: #ff6600; /* Unga theme color */
+        color: #ff6600;
+        /* Unga theme color */
         cursor: pointer;
-        order: 2; /* Force to right side */
+        order: 2;
+        /* Force to right side */
     }
 
     /* Desktop items-ah hide panna */
-    .nav-links, .contact-box, .top-bar {
+    .nav-links,
+    .contact-box,
+    .top-bar {
         display: none !important;
     }
-    
+
     /* Navbar background fix */
     .navbar {
         padding: 5px 0;
         background: #fff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 }
 
@@ -1185,14 +1680,16 @@ body {
         align-items: center;
         width: 100%;
     }
-    
+
     .nav-links {
-        display: flex; /* Links-ah thirumba kaatum */
+        display: flex;
+        /* Links-ah thirumba kaatum */
         list-style: none;
     }
 
     .contact-box {
-        display: flex; /* Contact box-ah thirumba kaatum */
+        display: flex;
+        /* Contact box-ah thirumba kaatum */
         align-items: center;
     }
 
@@ -1206,7 +1703,8 @@ body {
 @media screen and (max-width: 768px) {
     .nav-container {
         display: flex;
-        justify-content: space-between; /* Logo left, Menu right */
+        justify-content: space-between;
+        /* Logo left, Menu right */
         align-items: center;
         padding: 10px 20px;
     }
@@ -1214,12 +1712,14 @@ body {
     .mobile-menu-btn {
         display: block !important;
         font-size: 28px;
-        color: #ff6600; /* Unga orange theme color */
+        color: #ff6600;
+        /* Unga orange theme color */
         cursor: pointer;
     }
 
     /* Mobile-la mitha items-ah hide panna */
-    .nav-links, .contact-box {
+    .nav-links,
+    .contact-box {
         display: none !important;
     }
 
@@ -1229,6 +1729,7 @@ body {
         width: auto;
     }
 }
+
 /* ==================== 🖥️ PC VIEW ONLY (Min-width: 769px) ==================== */
 @media screen and (min-width: 769px) {
 
@@ -1237,20 +1738,22 @@ body {
         display: flex;
         align-items: center;
         list-style: none;
-        gap: 25px; /* Links-ku naduvula gap */
+        gap: 25px;
+        /* Links-ku naduvula gap */
         margin: 0;
         padding: 0;
     }
 
     /* 2. Hide Dropdown initially (Fix for image_cf1045.png) */
-    .dropdown-wrapper, 
+    .dropdown-wrapper,
     .service-list {
-        display: none !important; /* Items munnadiyae theriya koodathu */
+        display: none !important;
+        /* Items munnadiyae theriya koodathu */
         position: absolute;
         top: 100%;
         left: 0;
         background: #ffffff;
-        box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         z-index: 9999;
         padding: 20px;
@@ -1265,29 +1768,34 @@ body {
 
     /* Show only on Hover */
     .has-dropdown:hover .dropdown-wrapper {
-        display: flex !important; /* Mega Menu 2 columns-kaaga */
+        display: flex !important;
+        /* Mega Menu 2 columns-kaaga */
         width: 450px;
         left: 50%;
         transform: translateX(-50%);
     }
 
     .has-dropdown:hover .service-list {
-        display: block !important; /* Services list-kaaga */
+        display: block !important;
+        /* Services list-kaaga */
         width: 300px;
     }
 
     /* 4. Dropdown List Item Styling */
-    .dropdown-column, .service-list {
+    .dropdown-column,
+    .service-list {
         list-style: none;
         padding: 0;
     }
 
-    .dropdown-column li, .service-list li {
+    .dropdown-column li,
+    .service-list li {
         border-bottom: 1px solid #f2f2f2;
         padding: 5px 0;
     }
 
-    .dropdown-column li a, .service-list li a {
+    .dropdown-column li a,
+    .service-list li a {
         color: #333 !important;
         text-decoration: none;
         font-size: 14px;
@@ -1296,7 +1804,8 @@ body {
         padding: 8px 10px;
     }
 
-    .dropdown-column li a i, .service-list li a i {
+    .dropdown-column li a i,
+    .service-list li a i {
         margin-right: 12px;
         color: #ff6a00;
         width: 20px;
@@ -1323,47 +1832,59 @@ body {
 
 /* ==================== 📱 MOBILE RESET (Prevent breaking) ==================== */
 @media screen and (max-width: 768px) {
-    .dropdown-wrapper, .service-list {
-        display: none !important; /* Mobile menu-vukku dropdown ippo theriya koodathu */
+
+    .dropdown-wrapper,
+    .service-list {
+        display: none !important;
+        /* Mobile menu-vukku dropdown ippo theriya koodathu */
     }
 }
+
 /* 3. Dropdown Positioning & Width Fix */
 .has-dropdown:hover .dropdown-wrapper {
-    display: flex !important; 
+    display: flex !important;
     /* Box width-ah 450px-la irunthu 650px-ku mathi irukken */
-    width: 500px; 
+    width: 500px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 25px; /* Box-kulla nalla space irukka */
+    padding: 25px;
+    /* Box-kulla nalla space irukka */
 }
 
 .dropdown-column li a {
     /* Text rendu line-ah odaama irukka */
-    white-space: nowrap; 
+    white-space: nowrap;
     font-weight: 500;
 }
+
 /* ==================== 🖥️ PC VIEW ONLY (Min-width: 769px) ==================== */
 @media screen and (min-width: 769px) {
 
     /* 1. Nav Container - Logo matrum menu items-ai left-il otta vaikka */
     .nav-container {
         display: flex;
-        justify-content: flex-start; /* Items ellam left-la irunthu start aagum */
+        justify-content: flex-start;
+        /* Items ellam left-la irunthu start aagum */
         align-items: center;
-        
+
         /* Logo-vukkum Home link-ukkum naduvula gap-ah kuraikka (50px to 30px) */
-        gap: 30px; 
-        
-        max-width: 100%; /* Full screen-ah use panna */
-        padding: 0 40px; /* Orathula konjam gap */
+        gap: 30px;
+
+        max-width: 100%;
+        /* Full screen-ah use panna */
+        padding: 0 40px;
+        /* Orathula konjam gap */
     }
 
     /* 2. Nav Links - Ellaa links-aiyum idathu pakkam ner-la vaikka */
     .nav-links {
         display: flex;
-        flex: 1; /* Space-ah eduthu links-ah left-il thalla */
-        justify-content: flex-start; /* Links idathu pakkamae nirkum */
-        gap: 20px; /* Ovvovoru link-ukkum naduvula gap-ah innum kuraithu irukken */
+        flex: 1;
+        /* Space-ah eduthu links-ah left-il thalla */
+        justify-content: flex-start;
+        /* Links idathu pakkamae nirkum */
+        gap: 20px;
+        /* Ovvovoru link-ukkum naduvula gap-ah innum kuraithu irukken */
         list-style: none;
         margin: 0;
         padding: 0;
@@ -1371,50 +1892,76 @@ body {
 
     /* 3. Contact Box - Ithai mattum Right side (Valathu pakkam) thalla */
     .contact-box {
-        margin-left: auto; /* Ithu phone number-ah mattum orathukku thallum */
+        margin-left: auto;
+        /* Ithu phone number-ah mattum orathukku thallum */
         display: flex;
         align-items: center;
         white-space: nowrap;
     }
 }
+
 /* Container alignment */
 .blinking-dots-container {
     display: flex;
-    gap: 8px; /* Dots-ku naduvula ulla sariyaana gap */
+    gap: 8px;
+    /* Dots-ku naduvula ulla sariyaana gap */
     margin-top: 12px;
     padding-left: 5px;
 }
 
 /* Dots-ah circle-aa mathum properties */
 .dot {
-    width: 4px;  /* Size */
-    height: 4px; 
-    background-color:#696969; /* White color */
+    width: 4px;
+    /* Size */
+    height: 4px;
+    background-color: #696969;
+    /* White color */
     display: inline-block;
-    
+
     /* SQUARE-AI CIRCLE-AA MAATHA ITHU THAAN MUKHKIYAM */
-    border-radius: 50%; 
-    
+    border-radius: 50%;
+
     /* Animation settings */
     animation: circleBlink 1.5s infinite ease-in-out;
-    opacity: 0.3; /* Arambathil light-aa irukkum */
+    opacity: 0.3;
+    /* Arambathil light-aa irukkum */
 }
 
 /* Ovvovoru dot-um maari maari minna */
-.dot:nth-child(1) { animation-delay: 0s; }
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-.dot:nth-child(4) { animation-delay: 0.6s; }
-.dot:nth-child(5) { animation-delay: 0.8s; }
+.dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.dot:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.dot:nth-child(5) {
+    animation-delay: 0.8s;
+}
 
 /* Circle Blink Animation Effect */
 @keyframes circleBlink {
-    0%, 100% {
-        opacity: 0.3; /* Fade effect */
+
+    0%,
+    100% {
+        opacity: 0.3;
+        /* Fade effect */
         transform: scale(0.8);
     }
+
     50% {
-        opacity: 1; /* Full bright white */
-        transform: scale(1.2); /* Minnum pothu konjam perusaagum */
+        opacity: 1;
+        /* Full bright white */
+        transform: scale(1.2);
+        /* Minnum pothu konjam perusaagum */
     }
 }

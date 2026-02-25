@@ -48,7 +48,7 @@ $planMapping = [
     <div class="bg-white border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center space-x-4">
-                <a href="home.php"
+                <a href="javascript:void(0)" onclick="goBack()"
                     class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors group">
                     <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -340,8 +340,11 @@ $planMapping = [
                                 <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Selected
                                     Package</p>
                                 <p class="text-lg font-bold text-gray-900" id="selectedPackageName">None</p>
-                                <p class="text-sm  text-orange-600 mt-1">LKR <span id="selectedPackagePrice">0</span>.00
-                                    / Year</p>
+                                <p class="text-sm text-orange-600 font-bold mt-1">LKR <span id="selectedPackagePrice">0</span>.00 / Year</p>
+                                <button onclick="selectPlan(null, 'domainonly', domainPrice)"
+                                        class="w-full mt-3 py-1.5 bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold rounded-md hover:bg-red-600 hover:text-white hover:border-red-600 transition-all uppercase">
+                                    Clear Package
+                                </button>
                             </div>
 
                             <!-- Total -->
@@ -444,7 +447,7 @@ $planMapping = [
             };
 
             // Calculate package amount only (subtract domain price from total)
-            const packageAmountOnly = plan !== 'domainonly' ? (price - domainPrice) : price;
+            const packageAmountOnly = plan !== 'domainonly' ? (price - domainPrice) : 0;
 
             document.getElementById('selectedPackageName').textContent = planNames[plan];
             document.getElementById('selectedPackagePrice').textContent = packageAmountOnly;
@@ -453,6 +456,22 @@ $planMapping = [
             // Calculate total
             const total = plan === 'domainonly' ? domainPrice : (packageAmountOnly + domainPrice);
             document.getElementById('totalAmount').textContent = total;
+        }
+
+        function goBack() {
+            // Try to get domain from PHP variable, fallback to URL search param
+            let domain = '<?php echo addslashes($domain); ?>';
+            if (!domain) {
+                const urlParams = new URLSearchParams(window.location.search);
+                domain = urlParams.get('domain');
+            }
+
+            if (domain) {
+                console.log('Saving domain for return:', domain);
+                localStorage.setItem('pendingDomain', domain);
+                localStorage.setItem('shouldScrollToDomain', 'true');
+            }
+            window.location.href = 'home.php';
         }
 
         async function proceedToCheckout() {

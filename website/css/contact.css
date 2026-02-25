@@ -166,12 +166,12 @@
     font-size: 18px;
     text-decoration: none;
     transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .social-circle:hover {
     transform: translateY(-3px) rotate(5deg);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     background: #ff5500;
     color: white;
 }
@@ -199,13 +199,13 @@
     position: fixed;
     bottom: 30px;
     left: 30px;
-    background: linear-gradient(135deg,#A682D4, #A682D4);
+    background: linear-gradient(135deg, #A682D4, #A682D4);
     color: white;
     text-decoration: none;
     padding: 12px 25px;
     border-radius: 50px;
     box-shadow: 0 10px 25px rgba(255, 106, 0, 0.4);
-    z-index: 9999;
+    z-index: 11000;
     transition: all 0.3s ease;
 }
 
@@ -238,40 +238,40 @@
 }
 
 @media (max-width: 768px) {
-    .custom-site-footer { 
-        padding: 30px 20px !important; 
-        margin-top: 40px !important; 
-        text-align: center !important; 
+    .custom-site-footer {
+        padding: 30px 20px !important;
+        margin-top: 40px !important;
+        text-align: center !important;
     }
-    
-    .footer-bottom-row { 
-        font-size: 12px !important; 
-        line-height: 1.5 !important; 
+
+    .footer-bottom-row {
+        font-size: 12px !important;
+        line-height: 1.5 !important;
     }
-    
-    .sticky-contact-btn { 
-        bottom: 20px !important; 
-        right: 20px !important; 
-        left: auto !important; 
-        padding: 15px !important; 
-        width: 50px !important; 
-        height: 50px !important; 
-        border-radius: 50% !important; 
+
+    .sticky-contact-btn {
+        bottom: 20px !important;
+        right: 20px !important;
+        left: auto !important;
+        padding: 15px !important;
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 50% !important;
     }
-    
-    .sticky-contact-btn span { 
-        display: none !important; 
+
+    .sticky-contact-btn span {
+        display: none !important;
     }
-    
-    .sticky-contact-btn i { 
-        margin: 0 !important; 
-        font-size: 18px !important; 
+
+    .sticky-contact-btn i {
+        margin: 0 !important;
+        font-size: 18px !important;
     }
 }
 
 @media (max-width: 480px) {
-    .footer-bottom-row { 
-        font-size: 11px !important; 
+    .footer-bottom-row {
+        font-size: 11px !important;
     }
 }
 
@@ -279,11 +279,11 @@
     .custom-site-footer {
         padding: 20px 15px !important;
     }
-    
+
     .social-icons {
         gap: 15px !important;
     }
-    
+
     .social-circle {
         width: 35px !important;
         height: 35px !important;

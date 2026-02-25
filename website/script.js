@@ -1,7 +1,7 @@
 /* ==================== MAIN APPLICATION ==================== */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('WEBbuilders.lk loaded successfully!');
-    
+
     // Initialize all features
     initHeroAnimation();
     initTestimonialSlider();
@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function initHeroAnimation() {
     const header = document.getElementById('header-text');
     if (!header) return;
-    
+
     const content = header.innerHTML;
     header.innerHTML = '';
     const parts = content.split('<br>');
-    
+
     parts.forEach((part, index) => {
         part.split('').forEach((char, i) => {
             const span = document.createElement('span');
@@ -27,12 +27,12 @@ function initHeroAnimation() {
             span.style.animationDelay = (index * 0.5 + i * 0.05) + 's';
             header.appendChild(span);
         });
-        
+
         if (index < parts.length - 1) {
             header.appendChild(document.createElement('br'));
         }
     });
-    
+
     console.log('Hero animation initialized');
 }
 
@@ -40,10 +40,10 @@ function initHeroAnimation() {
 function initTestimonialSlider() {
     const allTSlides = document.querySelectorAll('.single-slide');
     if (allTSlides.length === 0) return;
-    
+
     let currentTIndex = 0;
     let slideInterval;
-    
+
     // Show specific slide
     function showTSlide(n) {
         // Remove active class from all slides
@@ -51,38 +51,38 @@ function initTestimonialSlider() {
             slide.classList.remove('active');
             slide.style.opacity = '0';
         });
-        
+
         // Calculate new index with wrap-around
         currentTIndex = (n + allTSlides.length) % allTSlides.length;
-        
+
         // Add active class to current slide
         allTSlides[currentTIndex].classList.add('active');
         setTimeout(() => {
             allTSlides[currentTIndex].style.opacity = '1';
         }, 10);
-        
+
         console.log(`Showing slide ${currentTIndex + 1} of ${allTSlides.length}`);
     }
-    
+
     // Move to next/previous slide
-    window.moveT = function(direction) {
+    window.moveT = function (direction) {
         showTSlide(currentTIndex + direction);
         resetAutoSlide(); // Reset timer on manual navigation
     };
-    
+
     // Auto slide every 5 seconds
     function startAutoSlide() {
         slideInterval = setInterval(() => {
             moveT(1);
         }, 5000);
     }
-    
+
     // Reset auto slide timer
     function resetAutoSlide() {
         clearInterval(slideInterval);
         startAutoSlide();
     }
-    
+
     // Pause on hover
     const sliderEngine = document.querySelector('.slider-engine');
     if (sliderEngine) {
@@ -90,13 +90,13 @@ function initTestimonialSlider() {
             clearInterval(slideInterval);
             console.log('Slider paused');
         });
-        
+
         sliderEngine.addEventListener('mouseleave', () => {
             startAutoSlide();
             console.log('Slider resumed');
         });
     }
-    
+
     // Initialize
     showTSlide(0);
     startAutoSlide();
@@ -108,56 +108,78 @@ function initMobileMenu() {
     const openBtn = document.getElementById('openMenu');
     const closeBtn = document.getElementById('closeMenu');
     const overlay = document.getElementById('mobileOverlay');
-    
+
     if (!openBtn || !overlay) {
         console.warn('Mobile menu elements not found');
         return;
     }
-    
+
     // Open mobile menu
-    openBtn.addEventListener('click', function() {
+    openBtn.addEventListener('click', function () {
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden'; // Prevent scrolling
         console.log('Mobile menu opened');
     });
-    
+
     // Close mobile menu
     if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
+        closeBtn.addEventListener('click', function () {
             closeMobileMenu();
         });
     }
-    
-    // Close menu when clicking on links
+
+    // Close menu when clicking on navigation links
+    // Targets main links (not in a dropdown) and all sub-menu links
     const mobileLinks = document.querySelectorAll('.mobile-links a');
     mobileLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            closeMobileMenu();
-            console.log('Mobile menu closed via link click');
+        link.addEventListener('click', function () {
+            // Only close if this link is NOT inside a toggle-active area (mobile-nav-item)
+            if (!this.closest('.mobile-nav-item')) {
+                closeMobileMenu();
+                console.log('Mobile menu closed via link click');
+            }
         });
     });
-    
+
     // Close menu when clicking outside content
-    overlay.addEventListener('click', function(e) {
+    overlay.addEventListener('click', function (e) {
         if (e.target === overlay) {
             closeMobileMenu();
         }
     });
-    
+
     // Close menu with ESC key
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && overlay.classList.contains('active')) {
             closeMobileMenu();
             console.log('Mobile menu closed via ESC key');
         }
     });
-    
+
     function closeMobileMenu() {
         overlay.classList.remove('active');
         document.body.style.overflow = ''; // Restore scrolling
         console.log('Mobile menu closed');
+
+        // Also close any open sub-menus when the main menu closes
+        document.querySelectorAll('.mobile-has-dropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+        });
     }
-    
+
+    // Toggle Mobile Sub-menus
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parentLi = this.closest('.mobile-has-dropdown');
+            if (parentLi) {
+                parentLi.classList.toggle('active');
+            }
+            console.log('Mobile sub-menu toggled');
+        });
+    });
+
     console.log('Mobile menu initialized');
 }
 
@@ -165,13 +187,13 @@ function initMobileMenu() {
 function initScrollAnimations() {
     // Add scroll-triggered animations
     const animatedElements = document.querySelectorAll('.service-content, .service-card, .partner-card');
-    
+
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
-    const observer = new IntersectionObserver(function(entries) {
+
+    const observer = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animated');
@@ -179,32 +201,32 @@ function initScrollAnimations() {
             }
         });
     }, observerOptions);
-    
+
     animatedElements.forEach(element => {
         observer.observe(element);
     });
-    
+
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
-            
+
             if (href === '#') return;
-            
+
             const targetElement = document.querySelector(href);
             if (targetElement) {
                 e.preventDefault();
-                
+
                 window.scrollTo({
                     top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
-                
+
                 console.log(`Smooth scroll to: ${href}`);
             }
         });
     });
-    
+
     console.log('Scroll animations initialized');
 }
 
@@ -215,35 +237,35 @@ function initFormValidation() {
     if (domainForm) {
         const domainInput = domainForm.querySelector('input[type="text"]');
         const domainButton = domainForm.querySelector('button');
-        
+
         if (domainButton) {
-            domainButton.addEventListener('click', function() {
+            domainButton.addEventListener('click', function () {
                 checkDomain(domainInput.value);
             });
-            
+
             // Allow Enter key to submit
-            domainInput.addEventListener('keypress', function(e) {
+            domainInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     checkDomain(domainInput.value);
                 }
             });
         }
     }
-    
+
     function checkDomain(domainName) {
         if (!domainName || domainName.trim() === '') {
             alert('Please enter a domain name to check.');
             return;
         }
-        
+
         // Show loading state
         const button = document.querySelector('.exact-input-group button');
         const originalText = button.textContent;
         button.textContent = 'Checking...';
         button.disabled = true;
-        
+
     }
-    
+
     console.log('Form validation initialized');
 }
 
@@ -274,18 +296,18 @@ function isInViewport(element) {
 }
 
 // Add CSS class for loaded state
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     document.body.classList.add('loaded');
     console.log('Page fully loaded');
 });
 
 // Handle window resize with debounce
-window.addEventListener('resize', debounce(function() {
+window.addEventListener('resize', debounce(function () {
     console.log(`Window resized to: ${window.innerWidth}px x ${window.innerHeight}px`);
 }, 250));
 
 // Log page visibility changes
-document.addEventListener('visibilitychange', function() {
+document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
         console.log('Page hidden');
     } else {
@@ -294,7 +316,7 @@ document.addEventListener('visibilitychange', function() {
 });
 
 // Error handling
-window.addEventListener('error', function(e) {
+window.addEventListener('error', function (e) {
     console.error('JavaScript Error:', e.message, 'at', e.filename, ':', e.lineno);
 });
 
@@ -303,7 +325,7 @@ window.addEventListener('error', function(e) {
 // Lazy load images
 function initLazyLoading() {
     const images = document.querySelectorAll('img[data-src]');
-    
+
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
@@ -316,7 +338,7 @@ function initLazyLoading() {
                 }
             });
         });
-        
+
         images.forEach(img => imageObserver.observe(img));
     } else {
         // Fallback for older browsers
@@ -335,14 +357,14 @@ if (document.readyState === 'loading') {
 
 console.log('WEBbuilders.lk JavaScript loaded successfully!');
 
-    const openMenu = document.getElementById('openMenu');
-    const closeMenu = document.getElementById('closeMenu');
-    const mobileOverlay = document.getElementById('mobileOverlay');
+const openMenu = document.getElementById('openMenu');
+const closeMenu = document.getElementById('closeMenu');
+const mobileOverlay = document.getElementById('mobileOverlay');
 
-    openMenu.addEventListener('click', () => {
-        mobileOverlay.style.display = 'flex';
-    });
+openMenu.addEventListener('click', () => {
+    mobileOverlay.style.display = 'flex';
+});
 
-    closeMenu.addEventListener('click', () => {
-        mobileOverlay.style.display = 'none';
-    });
+closeMenu.addEventListener('click', () => {
+    mobileOverlay.style.display = 'none';
+});
