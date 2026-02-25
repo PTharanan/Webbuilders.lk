@@ -631,6 +631,56 @@
                 domainInput.addEventListener('click', hideResult);
                 domainInput.addEventListener('input', hideResult);
             }
+
+            // Improved check for pending domain from back button
+            const savedDomain = localStorage.getItem('pendingDomain');
+            
+            if (savedDomain) {
+                const dInput = document.getElementById('domainInput');
+                const tSelect = document.getElementById('tldSelect');
+                
+                if (dInput) {
+                    // Split the domain to populate input and select
+                    const lastDot = savedDomain.lastIndexOf('.');
+                    if (lastDot !== -1) {
+                        dInput.value = savedDomain.substring(0, lastDot);
+
+                        if (tSelect) {
+                            const tld = savedDomain.substring(lastDot);
+                            for (let i = 0; i < tSelect.options.length; i++) {
+                                if (tSelect.options[i].value === tld) {
+                                    tSelect.selectedIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        dInput.value = savedDomain;
+                    }
+                    localStorage.removeItem('pendingDomain');
+                }
+            }
+
+            // Handle the auto-scroll with improved timing and placement
+            if (localStorage.getItem('shouldScrollToDomain') === 'true') {
+                const targetSection = document.getElementById('domain-finder');
+                if (targetSection) {
+                    // 800ms delay ensures hero animations don't disrupt the scroll target
+                    setTimeout(() => {
+                        const offset = 100; // Keep space above the heading
+                        const elementPosition = targetSection.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                        localStorage.removeItem('shouldScrollToDomain');
+                    }, 800);
+                } else {
+                    localStorage.removeItem('shouldScrollToDomain');
+                }
+            }
         });
     </script>
 

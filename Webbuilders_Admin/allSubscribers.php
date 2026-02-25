@@ -13,8 +13,8 @@ $pageTitle = 'Subscribers';
 $pageSubtitle = 'Manage PayHere subscriptions';
 
 // PayHere API Configuration
-define('PAYHERE_APP_ID', '4OVyJ0t6p5k4JH5EnimnM13PQ');
-define('PAYHERE_APP_SECRET', '4qDNp78DfPB48fdz4jCvSA4ZCpFvp8G3i4jxKFXRtmbK');
+define('PAYHERE_APP_ID', '4OVyblaLIC84JH5EsPSJf73PV');
+define('PAYHERE_APP_SECRET', '4p9OCkqtTk14TpzG8sKSId4fWWBvcC8RR4kmfw1RqJCD');
 
 // PayHere API Endpoints
 define('PAYHERE_SANDBOX_ENDPOINT', 'https://sandbox.payhere.lk/merchant/v1');
@@ -42,12 +42,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         exit;
     }
 
-    // Fetch all subscriptions to find the one we need
+    // Fetch single subscription directly
+    $subscriptionData = getSubscriptionById($subId, $accessToken);
+
+    if (!$subscriptionData) {
+        echo json_encode(['error' => 'Subscription not found']);
+        exit;
+    }
+
+    // Fetch subscription payments
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/subscription');
+    curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/subscription/' . $subId . '/payments');
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
         'Authorization: Bearer ' . $accessToken,
         'Content-Type: application/json'
+    ));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+    $paymentResponse = curl_exec($ch);
+    $paymentHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    $paymentData = [];
+    if ($paymentHttpCode === 200) {
+        $paymentResponseData = json_decode($paymentResponse, true);
+        $paymentData = $paymentResponseData['data'] ?? [];
+    }
+
+    echo json_encode([
+        'subscription' => $subscriptionData,
+        'payments' => $paymentData
+    ]);
+    exit;
+}
+
+// Function to get a single subscription by ID
+function getSubscriptionById($subscriptionId, $accessToken = null)
+{
+    if (!$accessToken || empty($subscriptionId)) {
+        return null;
+    }
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/subscription/' . $subscriptionId);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Authorization: Bearer ' . $accessToken,
+        'Content-Type: application/json',
+        'Accept: application/json'
     ));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
@@ -59,54 +103,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     curl_close($ch);
 
     if ($httpCode === 200) {
-        $responseData = json_decode($response, true);
-        $subscriptionData = null;
-
-        // Find the subscription with matching ID
-        if (isset($responseData['data']) && is_array($responseData['data'])) {
-            foreach ($responseData['data'] as $sub) {
-                if ($sub['subscription_id'] == $subId) {
-                    $subscriptionData = $sub;
-                    break;
-                }
-            }
+        $data = json_decode($response, true);
+        if (isset($data['status']) && $data['status'] == 1 && isset($data['data'])) {
+            return $data['data'];
         }
-
-        if (!$subscriptionData) {
-            echo json_encode(['error' => 'Subscription not found']);
-            exit;
-        }
-
-        // Fetch subscription payments
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, PAYHERE_API_ENDPOINT . '/subscription/' . $subId . '/payments');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . $accessToken,
-            'Content-Type: application/json'
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
-        $paymentResponse = curl_exec($ch);
-        $paymentHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        $paymentData = [];
-        if ($paymentHttpCode === 200) {
-            $paymentResponseData = json_decode($paymentResponse, true);
-            $paymentData = $paymentResponseData['data'] ?? [];
-        }
-
-        echo json_encode([
-            'subscription' => $subscriptionData,
-            'payments' => $paymentData
-        ]);
-    } else {
-        echo json_encode(['error' => 'Failed to fetch subscription details']);
     }
-    exit;
+
+    return null;
 }
 
 // Function to get Access Token
@@ -237,9 +240,43 @@ $subscriptionMessage = '';
 
 // Get all subscriptions if we have access token
 if ($accessToken) {
-    $result = getAllSubscriptions($accessToken);
-    $allSubscriptions = $result['subscriptions'];
-    $subscriptionMessage = $result['message'];
+    // 1. First check DB for required subscription IDs
+    $dbSubIds = [];
+    try {
+        $stmt = $conn->prepare("SELECT DISTINCT sub_ID FROM orders WHERE sub_ID IS NOT NULL AND sub_ID != ''");
+        $stmt->execute();
+        $dbSubIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    } catch (PDOException $e) {
+        $subscriptionMessage = "Database error: " . $e->getMessage();
+    }
+
+    if (!empty($dbSubIds)) {
+        // 2. Fetch the current list from PayHere (one quick call)
+        $listResult = getAllSubscriptions($accessToken);
+        $payhereList = $listResult['subscriptions'] ?? [];
+        $subscriptionMessage = $listResult['message'];
+
+        // Map list by ID for easy lookup
+        $idToSub = [];
+        foreach ($payhereList as $sub) {
+            $idToSub[$sub['subscription_id']] = $sub;
+        }
+
+        // 3. Match and fetch missing ones individually
+        foreach ($dbSubIds as $subId) {
+            if (isset($idToSub[$subId])) {
+                $allSubscriptions[] = $idToSub[$subId];
+            } else {
+                // If not in the recent list, try fetching it directly
+                $directSub = getSubscriptionById($subId, $accessToken);
+                if ($directSub) {
+                    $allSubscriptions[] = $directSub;
+                }
+            }
+        }
+    } else {
+        $subscriptionMessage = 'No subscriptions found in the local orders table.';
+    }
 } else {
     $subscriptionMessage = 'Failed to get access token. Check your App ID and App Secret.';
 }
@@ -313,7 +350,8 @@ ob_start();
                 <div class="ml-3">
                     <h3 class="text-sm font-medium text-green-800 dark:text-green-200">Successfully Loaded</h3>
                     <p class="mt-1 text-sm text-green-700 dark:text-green-300">Found
-                        <strong><?php echo count($allSubscriptions); ?></strong> subscription(s)</p>
+                        <strong><?php echo count($allSubscriptions); ?></strong> subscription(s)
+                    </p>
                 </div>
             </div>
         </div>
@@ -324,6 +362,8 @@ ob_start();
                 <thead>
                     <tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
                         <th class="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">SUB ID</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">PAYMENT NO</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">DATE</th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">CUSTOMER</th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">EMAIL</th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">PLAN</th>
@@ -354,8 +394,17 @@ ob_start();
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                             <td class="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
                                 <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                                        <?php echo htmlspecialchars(substr($subId, 0, 12)); ?>
-                                    </code>
+                                                        <?php echo htmlspecialchars(substr($subId, 0, 12)); ?>
+                                                    </code>
+                            </td>
+                            <td class="px-4 py-3 text-gray-900 dark:text-gray-100 font-medium">
+                                <code
+                                    class="text-xs bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded">
+                                                    <?php echo htmlspecialchars($subId); ?>
+                                                </code>
+                            </td>
+                            <td class="px-4 py-3 text-gray-600 dark:text-gray-400 text-xs">
+                                <?php echo htmlspecialchars($subscription['date'] ?? 'N/A'); ?>
                             </td>
                             <td class="px-4 py-3 text-gray-900 dark:text-gray-100">
                                 <?php echo htmlspecialchars($firstName . ' ' . $lastName); ?>
