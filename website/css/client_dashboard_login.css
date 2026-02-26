@@ -1,0 +1,381 @@
+/* ==================== 🌈 CSS VARIABLES ==================== */
+:root {
+    --orange: #ff7a00;
+    --blue: #0e0bb3;
+    --light-blue: #4eb0e5;
+    --brand-orange: #ff6a00;
+    --brand-orange-dark: #e66700;
+    --bg-white: #ffffff;
+    --text-dark: #222222;
+    --shadow-sm: 0 2px 15px rgba(0,0,0,0.05);
+    --shadow-md: 0 10px 25px rgba(255, 115, 0, 0.4);
+    --shadow-hover: 0 15px 30px rgba(255, 106, 0, 0.5);
+    --transition: all 0.3s ease;
+}
+
+/* ==================== 🔥 RESET & BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    background-color: var(--bg-white);
+    overflow-x: hidden;
+}
+
+/* ==================== 🖥️ HERO SECTION ONLY ==================== */
+
+/* Client Dashboard Banner - Orange Background */
+.orange-dashboard-banner {
+    background-color: var(--orange);
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+    margin-top: 0;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.orange-dashboard-banner h1 {
+    color: white;
+    font-size: 60px;
+    font-weight: 800;
+    text-transform: lowercase;
+    font-family: 'Poppins', sans-serif;
+    animation: slideInLeft 1s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+/* ==================== 📋 LOGIN BOX SECTION ==================== */
+.login-section {
+    padding: 80px 0;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+}
+
+.login-box {
+    width: 90%;
+    max-width: 800px;
+    border: 3px solid var(--orange);
+    border-radius: 35px;
+    padding: 50px;
+    text-align: center;
+    background: #fff;
+    margin-bottom: 50px;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 0.2s forwards;
+}
+
+.login-box h2 {
+    color: var(--orange);
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.input-field { 
+    text-align: left; 
+    margin-bottom: 25px; 
+}
+
+.input-field label { 
+    display: block; 
+    font-weight: 600; 
+    margin-bottom: 8px; 
+    color: var(--text-dark);
+}
+
+.input-field input { 
+    width: 100%; 
+    padding: 15px; 
+    border: 1px solid #ddd; 
+    border-radius: 8px;
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.input-field input:focus {
+    border-color: var(--orange);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+}
+
+/* Login Actions - Centered */
+.login-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+/* Blue Login Button */
+.btn-login {
+    background-color: #34a8da;
+    color: white;
+    border: none;
+    width: 200px;
+    padding: 14px 0;
+    font-size: 22px;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 10px 25px rgba(52, 168, 218, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login::after {
+    content: "→";
+    margin-left: 10px;
+    transition: transform 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #2b8cb5;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(52, 168, 218, 0.4);
+}
+
+.btn-login:hover::after {
+    transform: translateX(8px);
+}
+
+.help-text {
+    margin-top: 30px;
+    font-size: 15px;
+    color: #666;
+    text-align: center;
+}
+
+.contact-link {
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    margin-top: 12px;
+    transition: var(--transition);
+}
+
+.contact-link:hover {
+    color: var(--brand-orange-dark);
+    text-decoration: underline;
+}
+
+/* ==================== 🎬 ANIMATIONS ==================== */
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes iconBlink {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Animations Classes */
+.anim-fade-up {
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+
+/* ==================== 📱 MOBILE RESPONSIVE (iPhone 12 Pro) ==================== */
+
+/* Tablet & Small Desktop */
+@media screen and (max-width: 992px) {
+    .orange-dashboard-banner h1 {
+        font-size: 50px;
+    }
+    
+    .login-box {
+        padding: 40px;
+    }
+    
+    .login-box h2 {
+        font-size: 36px;
+    }
+}
+
+/* Mobile View - iPhone 12 Pro (390×844) & below */
+@media screen and (max-width: 768px) {
+    /* Hero Banner */
+    .orange-dashboard-banner {
+        min-height: 200px;
+        padding-left: 5%;
+    }
+    
+    .orange-dashboard-banner h1 {
+        font-size: 40px;
+    }
+    
+    /* Login Section */
+    .login-section {
+        padding: 50px 0;
+    }
+    
+    .login-box {
+        width: 85%;
+        padding: 35px 25px;
+        border-radius: 25px;
+    }
+    
+    .login-box h2 {
+        font-size: 32px;
+        margin-bottom: 25px;
+    }
+    
+    .input-field {
+        margin-bottom: 20px;
+    }
+    
+    .input-field input {
+        padding: 12px;
+        font-size: 15px;
+    }
+    
+    .btn-login {
+        width: 180px;
+        padding: 12px 0;
+        font-size: 20px;
+    }
+    
+    .help-text {
+        font-size: 14px;
+    }
+    
+    /* Sticky Button */
+    .contact-widget-fixed {
+        bottom: 20px;
+        left: 20px;
+    }
+    
+    .icon-box-purple {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+    }
+    
+    .text-box-white {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+/* Small Mobile (Below 480px) */
+@media screen and (max-width: 480px) {
+    .orange-dashboard-banner h1 {
+        font-size: 32px;
+    }
+    
+    .login-box {
+        width: 90%;
+        padding: 25px 20px;
+    }
+    
+    .login-box h2 {
+        font-size: 28px;
+    }
+    
+    .btn-login {
+        width: 160px;
+        padding: 10px 0;
+        font-size: 18px;
+    }
+    
+    .icon-box-purple {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .text-box-white {
+        padding: 8px 15px;
+        font-size: 12px;
+        margin-left: -12px;
+    }
+}
+
+/* Very Small Mobile (Below 350px) */
+@media screen and (max-width: 350px) {
+    .orange-dashboard-banner h1 {
+        font-size: 28px;
+    }
+    
+    .login-box h2 {
+        font-size: 24px;
+    }
+    
+    .btn-login {
+        width: 140px;
+        font-size: 16px;
+    }
+    
+    .contact-widget-fixed {
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .icon-box-purple {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .text-box-white {
+        display: none;
+    }
+}
+
+/* ==================== 🌟 UTILITY CLASSES ==================== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-20 { margin-bottom: 20px; }
+.mb-30 { margin-bottom: 30px; }
+
+.w-100 { width: 100%; }
+.h-100 { height: 100%; }

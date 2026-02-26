@@ -43,6 +43,9 @@
         <li class="my-2"><a href="manage_admins.php"
             class="block px-4 py-3 rounded-lg <?php echo basename($_SERVER['PHP_SELF']) == 'manage_admins.php' ? 'bg-white/10' : 'hover:bg-white/10'; ?> transition-all duration-300 flex items-center gap-3"><i
               class="fas fa-cog w-5 text-center"></i> Manage Admin</a></li>
+        <li class="my-2"><a href="manage_client.php"
+            class="block px-4 py-3 rounded-lg <?php echo basename($_SERVER['PHP_SELF']) == 'manage_client.php' ? 'bg-white/10' : 'hover:bg-white/10'; ?> transition-all duration-300 flex items-center gap-3"><i
+              class="fas fa-users w-5 text-center"></i>Manage Client</a></li>
       <?php endif; ?>
     </ul>
   </nav>
