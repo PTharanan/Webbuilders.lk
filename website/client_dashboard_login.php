@@ -1,6 +1,12 @@
 <?php
 require_once 'includes/dbConnect.php';
 
+// If already logged in, redirect to dashboard
+if (isset($_SESSION['client_logged_in']) && $_SESSION['client_logged_in'] === true) {
+    header("Location: client_dashboard.php");
+    exit;
+}
+
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])) {
