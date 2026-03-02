@@ -87,6 +87,11 @@ if ($accessToken) {
         }
     }
 }
+
+// Sort subscriptions by date descending (latest first)
+usort($clientSubscriptions, function($a, $b) {
+    return strtotime($b['date']) - strtotime($a['date']);
+});
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -312,6 +317,20 @@ if ($accessToken) {
                 <?php foreach ($clientSubscriptions as $sub):
                     $status = strtoupper($sub['status'] ?? 'PENDING');
                     $dateStr = date('M d, Y', strtotime($sub['date']));
+
+                    // Calculate End Date (Next Payment Date)
+                    $endDate = '';
+                    if (!empty($sub['next_payment_date'])) {
+                        $endDate = date('M d, Y', strtotime($sub['next_payment_date']));
+                    } else if (!empty($sub['recurring'])) {
+                        $recurring = strtolower($sub['recurring']);
+                        if (strpos($recurring, 'month') !== false) {
+                            $endDate = date('M d, Y', strtotime('+1 month', strtotime($sub['date'])));
+                        } else if (strpos($recurring, 'year') !== false || strpos($recurring, 'annual') !== false) {
+                            $endDate = date('M d, Y', strtotime('+1 year', strtotime($sub['date'])));
+                        }
+                    }
+
                     $amount = number_format($sub['amount'] ?? 0, 2);
                     $subId = $sub['subscription_id'];
                     $payments = $sub['payments'] ?? [];
@@ -328,7 +347,8 @@ if ($accessToken) {
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                                 <div>
                                     <h2 class="text-2xl font-extrabold text-slate-900">
-                                        <?php echo htmlspecialchars($sub['description'] ?? 'Subscription Package'); ?></h2>
+                                        <?php echo htmlspecialchars($sub['description'] ?? 'Subscription Package'); ?>
+                                    </h2>
                                     <p class="text-slate-500 font-medium">Subscription ID: <span
                                             class="text-tc">#<?php echo htmlspecialchars($subId); ?></span></p>
                                 </div>
@@ -351,7 +371,8 @@ if ($accessToken) {
                                     </h3>
                                     <div class="space-y-1">
                                         <p class="text-slate-900 font-bold">
-                                            <?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></p>
+                                            <?php echo htmlspecialchars($firstName . ' ' . $lastName); ?>
+                                        </p>
                                         <p class="text-slate-600 text-sm"><?php echo htmlspecialchars($clientEmail); ?></p>
                                         <p class="text-slate-600 text-sm"><?php echo htmlspecialchars($phone); ?></p>
                                     </div>
@@ -370,8 +391,12 @@ if ($accessToken) {
                                     <div class="space-y-1">
                                         <p class="text-slate-900 font-bold">Rs. <?php echo $amount; ?></p>
                                         <p class="text-slate-600 text-sm">Period:
-                                            <?php echo htmlspecialchars($sub['recurring'] ?? '-'); ?></p>
+                                            <?php echo htmlspecialchars($sub['recurring'] ?? '-'); ?>
+                                        </p>
                                         <p class="text-slate-600 text-sm">Started: <?php echo $dateStr; ?></p>
+                                                 <?php if ($endDate): ?>
+                                                         <p class="font-medium">Next billing: <span class="text-red-500"><?php echo $endDate; ?></span></p>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div>
@@ -399,7 +424,8 @@ if ($accessToken) {
                                                         class="text-slate-400 text-xs ml-2">(Rs.<?php echo number_format($item['unit_price'], 2); ?>
                                                         x <?php echo $item['quantity']; ?>)</span></p>
                                                 <p class="text-slate-900 font-bold">Rs.
-                                                    <?php echo number_format($item['total_price'], 2); ?></p>
+                                                    <?php echo number_format($item['total_price'], 2); ?>
+                                                </p>
                                             </div>
                                         <?php endforeach; ?>
                                     <?php else: ?>
@@ -436,9 +462,11 @@ if ($accessToken) {
                                                 <?php foreach ($payments as $payment): ?>
                                                     <tr class="hover:bg-slate-50/50 transition-colors">
                                                         <td class="px-6 py-4 text-slate-600">
-                                                            <?php echo date('Y-m-d H:i', strtotime($payment['date'])); ?></td>
+                                                            <?php echo date('Y-m-d H:i', strtotime($payment['date'])); ?>
+                                                        </td>
                                                         <td class="px-6 py-4 font-medium text-slate-900">
-                                                            <?php echo htmlspecialchars($payment['payment_id']); ?></td>
+                                                            <?php echo htmlspecialchars($payment['payment_id']); ?>
+                                                        </td>
                                                         <td class="px-6 py-4">
                                                             <span
                                                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -446,7 +474,8 @@ if ($accessToken) {
                                                             </span>
                                                         </td>
                                                         <td class="px-6 py-4 text-right font-bold text-slate-900">Rs.
-                                                            <?php echo number_format($payment['amount'], 2); ?></td>
+                                                            <?php echo number_format($payment['amount'], 2); ?>
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             <?php else: ?>
@@ -466,14 +495,7 @@ if ($accessToken) {
                             class="p-6 bg-slate-50/50 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
                             <p class="text-xs text-slate-400 font-medium italic"><i class="fas fa-info-circle mr-1"></i> Data
                                 automatically synchronized with PayHere Automated Charging API</p>
-                            <div class="flex gap-4">
-                                <button class="text-tc font-bold text-sm hover:underline"
-                                    onclick="alert('Please contact support to upgrade your package.')">Upgrade Package</button>
-                                <span class="text-slate-300">|</span>
-                                <button class="text-slate-400 font-bold text-sm hover:text-red-500 transition-colors"
-                                    onclick="alert('For security reasons, please contact technical support to cancel your subscription.')">Cancel
-                                    Subscription</button>
-                            </div>
+
                         </div>
                     </div>
                 <?php endforeach; ?>
