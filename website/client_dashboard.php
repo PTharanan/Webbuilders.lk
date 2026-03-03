@@ -89,7 +89,7 @@ if ($accessToken) {
 }
 
 // Sort subscriptions by date descending (latest first)
-usort($clientSubscriptions, function($a, $b) {
+usort($clientSubscriptions, function ($a, $b) {
     return strtotime($b['date']) - strtotime($a['date']);
 });
 ?>
@@ -151,6 +151,22 @@ usort($clientSubscriptions, function($a, $b) {
             width: 100%;
             height: 6px;
             background: linear-gradient(90deg, #f97316, #ea580c);
+            transition: opacity 0.4s ease;
+        }
+
+        /* Border hidden on mobile by default, always visible on PC */
+        @media (max-width: 767px) {
+            .enhanced-card::before {
+                opacity: 0;
+            }
+            .enhanced-card.is-expanded::before {
+                opacity: 1;
+            }
+        }
+        @media (min-width: 768px) {
+            .enhanced-card::before {
+                opacity: 1;
+            }
         }
 
         .section-title {
@@ -179,10 +195,10 @@ usort($clientSubscriptions, function($a, $b) {
         }
 
         .btn-logout {
-            background: #ff4d4d;
+            background: transparent;
             color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 8px 22px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             display: flex;
@@ -191,12 +207,15 @@ usort($clientSubscriptions, function($a, $b) {
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            font-size: 15px;
         }
 
         .btn-logout:hover {
-            background: #e60000;
+            background: white;
+            color: #ff6a00;
+            border-color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         /* Modal Styles */
@@ -296,7 +315,7 @@ usort($clientSubscriptions, function($a, $b) {
         </div>
         <div class="banner-content">
             <h1>Client Dashboard</h1>
-            <p>Welcome, <?php echo htmlspecialchars($_SESSION['client_username'] ?? 'Client'); ?></p>
+            <p class="text-white">Welcome, <?php echo htmlspecialchars($_SESSION['client_username'] ?? 'Client'); ?></p>
         </div>
     </section>
 
@@ -343,7 +362,8 @@ usort($clientSubscriptions, function($a, $b) {
                     ?>
                     <div class="enhanced-card animate-in fade-in slide-in-from-bottom-4 duration-700">
                         <!-- Header -->
-                        <div class="p-8 border-b border-slate-100 bg-slate-50/50">
+                        <div class="p-8 border-b border-slate-100 bg-slate-50/50 cursor-pointer hover:bg-slate-100/80 transition-all duration-300"
+                            onclick="togglePackageDetails('<?php echo $subId; ?>', this)">
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                                 <div>
                                     <h2 class="text-2xl font-extrabold text-slate-900">
@@ -352,22 +372,27 @@ usort($clientSubscriptions, function($a, $b) {
                                     <p class="text-slate-500 font-medium">Subscription ID: <span
                                             class="text-tc">#<?php echo htmlspecialchars($subId); ?></span></p>
                                 </div>
-                                <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-4">
                                     <span
                                         class="px-4 py-1.5 rounded-full text-sm font-bold <?php echo ($status === 'ACTIVE') ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'; ?>">
                                         <i
                                             class="fas <?php echo ($status === 'ACTIVE') ? 'fa-check-circle' : 'fa-clock'; ?> mr-1"></i>
                                         <?php echo $status; ?>
                                     </span>
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-tc/10 flex items-center justify-center text-tc hover:bg-tc hover:text-white transition-all duration-300">
+                                        <i class="fas fa-chevron-down chevron-ico transition-transform duration-300"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="p-8">
-                            <!-- Top Details Grid -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                        <!-- Grid shown by default ONLY ON PC -->
+                        <div class="p-8 pb-0 hidden md:block">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-6">
                                 <div>
-                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Customer Details
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Customer
+                                        Details
                                     </h3>
                                     <div class="space-y-1">
                                         <p class="text-slate-900 font-bold">
@@ -378,7 +403,8 @@ usort($clientSubscriptions, function($a, $b) {
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Billing Address
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Billing
+                                        Address
                                     </h3>
                                     <div class="space-y-1">
                                         <p class="text-slate-600 text-sm"><?php echo htmlspecialchars($city); ?></p>
@@ -394,13 +420,15 @@ usort($clientSubscriptions, function($a, $b) {
                                             <?php echo htmlspecialchars($sub['recurring'] ?? '-'); ?>
                                         </p>
                                         <p class="text-slate-600 text-sm">Started: <?php echo $dateStr; ?></p>
-                                                 <?php if ($endDate): ?>
-                                                         <p class="font-medium">Next billing: <span class="text-red-500"><?php echo $endDate; ?></span></p>
+                                        <?php if ($endDate): ?>
+                                            <p class="font-medium">Next billing: <span
+                                                    class="text-red-500"><?php echo $endDate; ?></span></p>
                                         <?php endif; ?>
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Active Domain
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Active
+                                        Domain
                                     </h3>
                                     <div class="space-y-1">
                                         <a href="<?php echo htmlspecialchars($sub['description']); ?>" target="_blank"
@@ -410,93 +438,138 @@ usort($clientSubscriptions, function($a, $b) {
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Item Details Section -->
-                            <div class="bg-slate-50 rounded-2xl p-6 mb-10 border border-slate-100">
-                                <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-list-ul text-tc"></i> Item Details
-                                </h3>
-                                <div class="space-y-3">
-                                    <?php if (isset($sub['items']) && is_array($sub['items'])): ?>
-                                        <?php foreach ($sub['items'] as $item): ?>
-                                            <div class="flex justify-between items-center py-2 border-b border-slate-200 last:border-0">
-                                                <p class="text-slate-600"><?php echo htmlspecialchars($item['name']); ?> <span
-                                                        class="text-slate-400 text-xs ml-2">(Rs.<?php echo number_format($item['unit_price'], 2); ?>
-                                                        x <?php echo $item['quantity']; ?>)</span></p>
-                                                <p class="text-slate-900 font-bold">Rs.
-                                                    <?php echo number_format($item['total_price'], 2); ?>
-                                                </p>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <div class="flex justify-between items-center py-2">
-                                            <p class="text-slate-600"><?php echo htmlspecialchars($sub['description']); ?></p>
-                                            <p class="text-slate-900 font-bold">Rs. <?php echo $amount; ?></p>
+                        <div id="details-<?php echo $subId; ?>" class="hidden overflow-hidden">
+                            <div class="p-8 pt-0 md:pt-0">
+                                <!-- Duplicate Grid shown ONLY ON MOBILE inside the collapsible -->
+                                <div class="grid grid-cols-1 gap-6 mb-10 md:hidden pt-8 border-t border-slate-100">
+                                    <div>
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Customer Details</h3>
+                                        <div class="space-y-1">
+                                            <p class="text-slate-900 font-bold"><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></p>
+                                            <p class="text-slate-600 text-sm"><?php echo htmlspecialchars($clientEmail); ?></p>
+                                            <p class="text-slate-600 text-sm"><?php echo htmlspecialchars($phone); ?></p>
                                         </div>
-                                    <?php endif; ?>
-                                </div>
-                                <div
-                                    class="mt-4 pt-4 border-t-2 border-dashed border-slate-200 flex justify-between items-center">
-                                    <p class="font-bold text-slate-900">Total Recurring Amount</p>
-                                    <p class="text-xl font-black text-tc">Rs. <?php echo $amount; ?></p>
-                                </div>
-                            </div>
-
-                            <!-- Payments Table -->
-                            <div>
-                                <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-history text-tc"></i> Payment History
-                                </h3>
-                                <div class="overflow-hidden rounded-xl border border-slate-200">
-                                    <table class="w-full text-sm text-left">
-                                        <thead class="bg-slate-50 text-slate-600 border-b border-slate-200">
-                                            <tr>
-                                                <th class="px-6 py-4 font-bold">Date</th>
-                                                <th class="px-6 py-4 font-bold">Payment ID</th>
-                                                <th class="px-6 py-4 font-bold">Status</th>
-                                                <th class="px-6 py-4 font-bold text-right">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-slate-100">
-                                            <?php if (!empty($payments)): ?>
-                                                <?php foreach ($payments as $payment): ?>
-                                                    <tr class="hover:bg-slate-50/50 transition-colors">
-                                                        <td class="px-6 py-4 text-slate-600">
-                                                            <?php echo date('Y-m-d H:i', strtotime($payment['date'])); ?>
-                                                        </td>
-                                                        <td class="px-6 py-4 font-medium text-slate-900">
-                                                            <?php echo htmlspecialchars($payment['payment_id']); ?>
-                                                        </td>
-                                                        <td class="px-6 py-4">
-                                                            <span
-                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                                Success
-                                                            </span>
-                                                        </td>
-                                                        <td class="px-6 py-4 text-right font-bold text-slate-900">Rs.
-                                                            <?php echo number_format($payment['amount'], 2); ?>
-                                                        </td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <tr>
-                                                    <td colspan="4" class="px-6 py-8 text-center text-slate-400 italic">No payment
-                                                        transactions found.</td>
-                                                </tr>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Billing Address</h3>
+                                        <div class="space-y-1">
+                                            <p class="text-slate-600 text-sm"><?php echo htmlspecialchars($city); ?></p>
+                                            <p class="text-slate-600 text-sm">Sri Lanka</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Payment Info</h3>
+                                        <div class="space-y-1">
+                                            <p class="text-slate-900 font-bold">Rs. <?php echo $amount; ?></p>
+                                            <p class="text-slate-600 text-sm">Period: <?php echo htmlspecialchars($sub['recurring'] ?? '-'); ?></p>
+                                            <p class="text-slate-600 text-sm">Started: <?php echo $dateStr; ?></p>
+                                            <?php if ($endDate): ?>
+                                                <p class="font-medium">Next billing: <span class="text-red-500"><?php echo $endDate; ?></span></p>
                                             <?php endif; ?>
-                                        </tbody>
-                                    </table>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Active Domain</h3>
+                                        <div class="space-y-1">
+                                            <a href="<?php echo htmlspecialchars($sub['description']); ?>" target="_blank" class="text-blue-600 font-bold hover:underline block truncate">
+                                                <?php echo htmlspecialchars($sub['description']); ?>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Item Details Section -->
+                                <div class="bg-slate-50 rounded-2xl p-6 mb-10 border border-slate-100">
+                                    <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                        <i class="fas fa-list-ul text-tc"></i> Item Details
+                                    </h3>
+                                    <div class="space-y-3">
+                                        <?php if (isset($sub['items']) && is_array($sub['items'])): ?>
+                                            <?php foreach ($sub['items'] as $item): ?>
+                                                <div
+                                                    class="flex justify-between items-center py-2 border-b border-slate-200 last:border-0">
+                                                    <p class="text-slate-600"><?php echo htmlspecialchars($item['name']); ?> <span
+                                                            class="text-slate-400 text-xs ml-2">(Rs.<?php echo number_format($item['unit_price'], 2); ?>
+                                                            x <?php echo $item['quantity']; ?>)</span></p>
+                                                    <p class="text-slate-900 font-bold">Rs.
+                                                        <?php echo number_format($item['total_price'], 2); ?>
+                                                    </p>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <div class="flex justify-between items-center py-2">
+                                                <p class="text-slate-600"><?php echo htmlspecialchars($sub['description']); ?></p>
+                                                <p class="text-slate-900 font-bold">Rs. <?php echo $amount; ?></p>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div
+                                        class="mt-4 pt-4 border-t-2 border-dashed border-slate-200 flex justify-between items-center">
+                                        <p class="font-bold text-slate-900">Total Recurring Amount</p>
+                                        <p class="text-xl font-black text-tc">Rs. <?php echo $amount; ?></p>
+                                    </div>
+                                </div>
+
+                                <!-- Payments Table -->
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                        <i class="fas fa-history text-tc"></i> Payment History
+                                    </h3>
+                                    <div class="overflow-hidden rounded-xl border border-slate-200">
+                                        <table class="w-full text-sm text-left">
+                                            <thead class="bg-slate-50 text-slate-600 border-b border-slate-200">
+                                                <tr>
+                                                    <th class="px-6 py-4 font-bold">Date</th>
+                                                    <th class="px-6 py-4 font-bold">Payment ID</th>
+                                                    <th class="px-6 py-4 font-bold">Status</th>
+                                                    <th class="px-6 py-4 font-bold text-right">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-slate-100">
+                                                <?php if (!empty($payments)): ?>
+                                                    <?php foreach ($payments as $payment): ?>
+                                                        <tr class="hover:bg-slate-50/50 transition-colors">
+                                                            <td class="px-6 py-4 text-slate-600">
+                                                                <?php echo date('Y-m-d H:i', strtotime($payment['date'])); ?>
+                                                            </td>
+                                                            <td class="px-6 py-4 font-medium text-slate-900">
+                                                                <?php echo htmlspecialchars($payment['payment_id']); ?>
+                                                            </td>
+                                                            <td class="px-6 py-4">
+                                                                <span
+                                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                    Success
+                                                                </span>
+                                                            </td>
+                                                            <td class="px-6 py-4 text-right font-bold text-slate-900">Rs.
+                                                                <?php echo number_format($payment['amount'], 2); ?>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td colspan="4" class="px-6 py-8 text-center text-slate-400 italic">No
+                                                            payment
+                                                            transactions found.</td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Footer Info -->
-                        <div
-                            class="p-6 bg-slate-50/50 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
-                            <p class="text-xs text-slate-400 font-medium italic"><i class="fas fa-info-circle mr-1"></i> Data
-                                automatically synchronized with PayHere Automated Charging API</p>
+                            <!-- Footer Info -->
+                            <div
+                                class="p-6 bg-slate-50/50 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                                <p class="text-xs text-slate-400 font-medium italic"><i class="fas fa-info-circle mr-1"></i>
+                                    Data
+                                    automatically synchronized with PayHere Automated Charging API</p>
 
-                        </div>
+                            </div>
+                        </div> <!-- End Collapsible Container -->
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -519,6 +592,24 @@ usort($clientSubscriptions, function($a, $b) {
     </div>
 
     <script>
+        function togglePackageDetails(subId, headerElement) {
+            const card = headerElement.closest('.enhanced-card');
+            const detailsDiv = document.getElementById('details-' + subId);
+            const chevron = headerElement.querySelector('.chevron-ico');
+
+            if (detailsDiv.classList.contains('hidden')) {
+                detailsDiv.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+                headerElement.classList.add('bg-slate-100');
+                card.classList.add('is-expanded');
+            } else {
+                detailsDiv.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+                headerElement.classList.remove('bg-slate-100');
+                card.classList.remove('is-expanded');
+            }
+        }
+
         function showLogoutModal() {
             document.getElementById('logoutModal').style.display = 'flex';
         }

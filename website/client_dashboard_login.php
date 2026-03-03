@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])) {
                 <button type="submit" name="login_submit" class="btn-login">Login</button>
             </form>
             <p class="help-text">If You forgot Your Password Please Contact Our Technical Support Team</p>
-            <a href="#" class="contact-link">Contact now</a>
+            <a href="contact.php" class="contact-link">Contact now</a>
         </div>
     </main>
     <script src="script.js"></script>
