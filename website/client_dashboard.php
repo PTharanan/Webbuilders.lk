@@ -632,6 +632,7 @@ usort($clientSubscriptions, function ($a, $b) {
     </script>
 
     <?php include 'includes/footer.php'; ?>
+<script src="script.js"></script>
 </body>
 
 </html>
