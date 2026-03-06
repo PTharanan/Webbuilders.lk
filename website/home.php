@@ -36,6 +36,33 @@
             </div>
         </div>
     </section>
+    <script>
+    // Smooth scroll with offset for #dream-domain-section
+    document.addEventListener('DOMContentLoaded', function() {
+        function offsetScrollToSection(e) {
+            const anchor = e.target.closest('a[href$="#dream-domain-section"]');
+            if (anchor) {
+                const section = document.getElementById('dream-domain-section');
+                if (section) {
+                    e.preventDefault();
+                    // Increased offset for full heading visibility
+                    const offset = 260;
+                    const sectionTop = section.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top: sectionTop, behavior: 'smooth' });
+                }
+            }
+        }
+        // Desktop menu
+        document.querySelectorAll('a[href$="#dream-domain-section"]').forEach(link => {
+            link.addEventListener('click', offsetScrollToSection);
+        });
+        // Mobile menu (event delegation)
+        const mobileLinks = document.querySelector('.mobile-links');
+        if (mobileLinks) {
+            mobileLinks.addEventListener('click', offsetScrollToSection);
+        }
+    });
+    </script>
 
     <section id="domain-finder" class="about-exact-section">
         <div class="about-exact-container">
@@ -58,7 +85,7 @@
                     unnecessary details, and maintain a top level of professionalism. We believe in dedicated
                     involvement to produce post-implementation support.</p>
 
-                <div class="exact-orange-box">
+                <div class="exact-orange-box" id="dream-domain-section">
                     <h3 class="box-label">CHECK YOUR DREAM WEBSITE NAME :</h3>
                     <div class="exact-input-group">
                         <input type="text" id="domainInput" placeholder="Enter your domain name here...">

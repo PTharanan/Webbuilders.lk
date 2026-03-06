@@ -30,24 +30,27 @@
                 <a href="home.php#pages">Pages <i class="fas fa-chevron-down"></i></a>
                 <div class="dropdown-wrapper">
                     <ul class="dropdown-column">
-                        <li><a href="home.php#pages"><i class="fas fa-briefcase icon-orange"></i> Pages</a></li>
-                        <li><a href="home.php#careers"><i class="fas fa-map-signs icon-orange"></i> Careers</a></li>
-                        <li><a href="home.php#portfolio"><i class="fas fa-chart-line icon-orange"></i> Portfolio</a>
+                        <li><a href="about.php"><i class="fas fa-user icon-orange"></i> About</a></li>
+                        <li><a href="carees.php"><i class="fas fa-map-signs icon-orange"></i> Careers</a></li>
+                        <li><a href="portfolio.php"><i class="fas fa-chart-line icon-orange"></i> Portfolio</a>
                         </li>
-                        <li><a href="home.php#terms"><i class="fas fa-file-contract icon-orange"></i> Terms and
+                        <li><a href="termsandconditions.php"><i class="fas fa-file-contract icon-orange"></i> Terms and
                                 Conditions</a></li>
-                        <li><a href="home.php#privacy"><i class="fas fa-user-shield icon-orange"></i> Privacy Policy</a>
+                        <li><a href="privacypolicy.php"><i class="fas fa-user-shield icon-orange"></i> Privacy
+                                Policy</a>
                         </li>
-                        <li><a href="client_dashboard_login.php"><i class="fas fa-tachometer-alt icon-orange"></i> Client Dashboard</a></li>
+                        <li><a href="client_dashboard_login.php"><i class="fas fa-tachometer-alt icon-orange"></i>
+                                Client Dashboard</a></li>
                     </ul>
                     <ul class="dropdown-column">
-                        <li><a href="home.php#faq"><i class="fas fa-question-circle icon-orange"></i> FAQ</a></li>
-                        <li><a href="home.php#testimonial"><i class="fas fa-users icon-orange"></i> Testimonial</a></li>
-                        <li><a href="home.php#google-map"><i class="fas fa-comments icon-orange"></i> Google Map</a>
+                        <li><a href="faq.php"><i class="fas fa-question-circle icon-orange"></i> FAQ</a></li>
+                        <li><a href="testimonial.php"><i class="fas fa-users icon-orange"></i> Testimonial</a></li>
+                        <li><a href="googlemap.php"><i class="fas fa-comments icon-orange"></i> Google Map</a>
                         </li>
-                        <li><a href="home.php#refund"><i class="fas fa-hand-holding-usd icon-orange"></i> Refund
+                        <li><a href="refundpolicy.php"><i class="fas fa-hand-holding-usd icon-orange"></i> Refund
                                 Policy</a></li>
-                        <li><a href="home.php#process"><i class="fas fa-cogs icon-orange"></i> Services Purchasing
+                        <li><a href="servicespurchasingprocess.php"><i class="fas fa-cogs icon-orange"></i> Services
+                                Purchasing
                                 Process</a></li>
                     </ul>
                 </div>
@@ -56,22 +59,22 @@
             <li class="has-dropdown">
                 <a href="home.php#services">Services <i class="fas fa-chevron-down"></i></a>
                 <ul class="dropdown-menu service-list">
-                    <li><a href="home.php#web-design"><i class="fas fa-laptop-code"></i> Web Design & Development</a>
+                    <li><a href="websitedesign&development.php"><i class="fas fa-laptop-code"></i> Web Design & Development</a>
                     </li>
-                    <li><a href="home.php#mgmt"><i class="fas fa-tasks"></i> Website Management</a></li>
-                    <li><a href="home.php#social"><i class="fas fa-share-alt"></i> Social Media Management</a></li>
-                    <li><a href="home.php#seo"><i class="fas fa-search"></i> Search Engine Optimization</a></li>
-                    <li><a href="home.php#hosting"><i class="fas fa-server"></i> Hosting & Domain</a></li>
-                    <li><a href="home.php#support"><i class="fas fa-tools"></i> Web Technical Support</a></li>
-                    <li><a href="home.php#content"><i class="fas fa-pen-nib"></i> Content Writing</a></li>
-                    <li><a href="home.php#reseller"><i class="fas fa-handshake"></i> Reseller Program</a></li>
-                    <li><a href="home.php#startup"><i class="fas fa-rocket"></i> Startup Funding Program</a></li>
+                    <li><a href="websitemanagementservice.php"><i class="fas fa-tasks"></i> Website Management</a></li>
+                    <li><a href="socialmediamarketing.php"><i class="fas fa-share-alt"></i> Social Media Management</a></li>
+                    <li><a href="searchengineoptimization.php"><i class="fas fa-search"></i> Search Engine Optimization</a></li>
+                    <li><a href="hosting&domain.php"><i class="fas fa-server"></i> Hosting & Domain</a></li>
+                    <li><a href="webtechnicalsupport.php"><i class="fas fa-tools"></i> Web Technical Support</a></li>
+                    <li><a href="contentwriting.php"><i class="fas fa-pen-nib"></i> Content Writing</a></li>
+                    <li><a href="resellerprogram.php"><i class="fas fa-handshake"></i> Reseller Program</a></li>
+                    <li><a href="startupfundingprogram.php"><i class="fas fa-rocket"></i> Startup Funding Program</a></li>
                 </ul>
             </li>
 
-            <li><a href="support.html">Support</a></li>
+            <li><a href="support.php">Support</a></li>
 
-            <li><a href="home.php#domain" class="alt-color">Domain Finder</a></li>
+            <li><a href="home.php#dream-domain-section" class="alt-color">Domain Finder</a></li>
             <li><a href="home.php#team">Our Team</a></li>
             <li><a href="update.php">Our Updates</a></li>
 
@@ -97,12 +100,22 @@
                 <i class="fas fa-chevron-down toggle-sub-menu"></i>
             </div>
             <ul class="mobile-sub-menu">
-                <li><a href="home.php#pages"><i class="fas fa-briefcase icon-orange"></i> Pages</a></li>
-                    <li><a href="home.php#careers"><i class="fas fa-map-signs icon-orange"></i> Careers</a></li>
-                    <li><a href="home.php#portfolio"><i class="fas fa-chart-line icon-orange"></i> Portfolio</a></li>
-                    <li><a href="home.php#terms"><i class="fas fa-file-contract icon-orange"></i> Terms and Conditions</a></li>
-                    <li><a href="home.php#privacy"><i class="fas fa-user-shield icon-orange"></i> Privacy Policy</a></li>
-                    <li><a href="client_dashboard_login.php"><i class="fas fa-tachometer-alt icon-orange"></i> Client Dashboard</a></li>
+                <li><a href="about.php"><i class="fas fa-user icon-orange"></i> About</a></li>
+                <li><a href="carees.php"><i class="fas fa-map-signs icon-orange"></i> Careers</a></li>
+                <li><a href="portfolio.php"><i class="fas fa-chart-line icon-orange"></i> Portfolio</a></li>
+                <li><a href="termsandconditions.php"><i class="fas fa-file-contract icon-orange"></i> Terms and
+                        Conditions</a>
+                </li>
+                <li><a href="privacypolicy.php"><i class="fas fa-user-shield icon-orange"></i> Privacy Policy</a></li>
+                <li><a href="client_dashboard_login.php"><i class="fas fa-tachometer-alt icon-orange"></i> Client
+                        Dashboard</a></li>
+                <li><a href="faq.php"><i class="fas fa-question-circle icon-orange"></i> FAQ</a></li>
+                <li><a href="testimonial.php"><i class="fas fa-users icon-orange"></i> Testimonial</a></li>
+                <li><a href="googlemap.php"><i class="fas fa-comments icon-orange"></i> Google Map</a></li>
+                <li><a href="refundpolicy.php"><i class="fas fa-hand-holding-usd icon-orange"></i> Refund Policy</a>
+                </li>
+                <li><a href="servicespurchasingprocess.php"><i class="fas fa-cogs icon-orange"></i> Services Purchasing
+                        Process</a></li>
             </ul>
         </li>
         <li class="mobile-has-dropdown">
@@ -111,19 +124,19 @@
                 <i class="fas fa-chevron-down toggle-sub-menu"></i>
             </div>
             <ul class="mobile-sub-menu">
-                <li><a href="home.php#web-design"><i class="fas fa-laptop-code"></i> Web Design & Development</a></li>
-                <li><a href="home.php#mgmt"><i class="fas fa-tasks"></i> Website Management</a></li>
-                <li><a href="home.php#social"><i class="fas fa-share-alt"></i> Social Media Management</a></li>
-                <li><a href="home.php#seo"><i class="fas fa-search"></i> Search Engine Optimization</a></li>
-                <li><a href="home.php#hosting"><i class="fas fa-server"></i> Hosting & Domain</a></li>
-                <li><a href="home.php#support"><i class="fas fa-tools"></i> Web Technical Support</a></li>
-                <li><a href="home.php#content"><i class="fas fa-pen-nib"></i> Content Writing</a></li>
-                <li><a href="home.php#reseller"><i class="fas fa-handshake"></i> Reseller Program</a></li>
-                <li><a href="home.php#startup"><i class="fas fa-rocket"></i> Startup Funding Program</a></li>
+                <li><a href="websitedesign&development.php"><i class="fas fa-laptop-code"></i> Web Design & Development</a></li>
+                <li><a href="websitemanagementservice.php"><i class="fas fa-tasks"></i> Website Management</a></li>
+                <li><a href="socialmediamarketing.php"><i class="fas fa-share-alt"></i> Social Media Management</a></li>
+                <li><a href="searchengineoptimization.php"><i class="fas fa-search"></i> Search Engine Optimization</a></li>
+                <li><a href="hosting&domain.php"><i class="fas fa-server"></i> Hosting & Domain</a></li>
+                <li><a href="webtechnicalsupport.php"><i class="fas fa-tools"></i> Web Technical Support</a></li>
+                <li><a href="contentwriting.php"><i class="fas fa-pen-nib"></i> Content Writing</a></li>
+                <li><a href="resellerprogram.php"><i class="fas fa-handshake"></i> Reseller Program</a></li>
+                <li><a href="startupfundingprogram.php"><i class="fas fa-rocket"></i> Startup Funding Program</a></li>
             </ul>
         </li>
-        <li><a href="support.html">Support</a></li>
-        <li><a href="home.php#domain">Domain Finder</a></li>
+        <li><a href="support.php">Support</a></li>
+        <li><a href="home.php#dream-domain-section">Domain Finder</a></li>
         <li><a href="home.php#team">Our Team</a></li>
         <li><a href="update.php">Our Updates</a></li>
         <li><a href="contact.php">Contact</a></li>
