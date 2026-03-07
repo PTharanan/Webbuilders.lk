@@ -1,0 +1,592 @@
+/* ==================== 🌈 CSS VARIABLES ==================== */
+:root {
+    --brand-orange: #ff6a00;
+    --link-blue: #fafafa;
+    --bg-white: #ffffff;
+}
+
+/* ==================== 🔥 RESET & BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-white);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* ==================== 🚀 GAP FIX FOR BLOG CONTENT ==================== */
+
+/* Article Body Wrapper - REMOVE ALL EXCESSIVE GAPS */
+.article-body-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    background-color: #fcfcfc !important;
+    padding: 0 !important; /* TOP GAP FIXED: Changed from 50px to 0 */
+    width: 100% !important;
+    margin-top: 0 !important;
+}
+
+/* Central Card - NO TOP MARGIN */
+.article-content-card {
+    width: 95% !important;
+    max-width: 1050px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05) !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    margin-top: 0 !important; /* Removed top margin */
+}
+
+/* Image - NO GAP AFTER NAVBAR */
+.article-img {
+    width: 100% !important; /* Changed from 70% to 100% */
+    height: auto !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Content Section - MINIMAL GAP AFTER IMAGE */
+.article-text-padding {
+    padding: 20px 40px 30px 40px !important; /* Reduced top padding from 40px to 20px */
+}
+
+/* Article Title - TIGHT SPACING */
+.article-title {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 32px !important;
+    font-weight: 600 !important;
+    color: #0d233e !important;
+    margin-bottom: 15px !important; /* Reduced from 20px */
+    line-height: 1.3 !important;
+}
+
+/* Paragraph Spacing - MINIMAL GAP */
+.article-text-padding p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 16px !important; /* Reduced gap between paragraphs */
+    text-align: justify;
+}
+
+/* Remove extra space after meta info */
+.meta-info {
+    margin-bottom: 20px !important; /* Reduced from 25px */
+}
+
+/* First paragraph after title */
+.article-text-padding p:first-of-type {
+    margin-top: 5px !important;
+}
+
+/* ==================== 📱 MOBILE BLOG FIX ==================== */
+@media (max-width: 768px) {
+    .article-body-wrapper {
+        padding: 0 !important;
+    }
+    
+    .article-content-card {
+        width: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+    
+    .article-img {
+        width: 100% !important;
+        border-radius: 0 !important;
+    }
+    
+    .article-text-padding {
+        padding: 15px 20px 25px 20px !important;
+    }
+    
+    .article-title {
+        font-size: 24px !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .article-text-padding p {
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 14px !important;
+    }
+}
+
+/* ==================== 🎨 BLOG HERO SECTION ==================== */
+.hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 20px;
+    margin-top: 0 !important;
+}
+
+.container {
+    max-width: 750px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.blog-post-group {
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 0 !important;
+}
+
+.post-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0;
+}
+
+/* Content Container */
+.content-container {
+    max-width: 1000px;
+    width: 90%;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 20px 40px; /* Reduced top padding */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-radius: 0 0 15px 15px;
+}
+
+/* Blog Text - MINIMAL GAP */
+.blog-text h1 {
+    font-size: 2.2rem;
+    color: #222;
+    margin-bottom: 18px !important; /* Reduced */
+    font-weight: 700;
+}
+
+.blog-text p {
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 16px !important; /* Reduced from 20px */
+    text-align: justify;
+}
+
+/* Highlights */
+.highlight {
+    color: #f06424;
+    font-weight: 600;
+}
+
+strong {
+    font-weight: 700;
+    color: #000;
+}
+
+/* ==================== 🚨 EXTRA GAP REMOVAL ==================== */
+
+/* Remove all unwanted white space */
+body > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Ensure navbar is flush with top */
+.navbar {
+    margin-top: 0 !important;
+    padding-top: 12px !important;
+}
+
+/* Remove any gap between navbar and content */
+.navbar + * {
+    margin-top: 0 !important;
+}
+
+/* Mobile gap fix */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 10px !important;
+        min-height: auto !important;
+    }
+    
+    .content-container {
+        width: 100% !important;
+        padding: 15px 20px !important;
+        border-radius: 0 !important;
+    }
+    
+    .blog-text h1 {
+        font-size: 1.8rem !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .blog-text p {
+        margin-bottom: 14px !important;
+    }
+}
+/* ==================== 📦 CENTRAL CONTAINER WRAPPER ==================== */
+.article-body-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    background-color: #fcfcfc !important; /* Page background color */
+    width: 100% !important;
+    padding: 0 !important; /* Mela gap thookka zero padding */
+    margin: 0 !important;
+}
+
+/* ==================== 🃏 BLOG CARD (CENTERED) ==================== */
+.article-content-card {
+    width: 95% !important;
+    max-width: 1050px !important; /* Desktop-la blog card-oda width */
+    background-color: #ffffff !important;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05) !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    margin: 0 auto !important; /* Center alignment */
+}
+
+/* ==================== 🖼️ IMAGE GAP FIX ==================== */
+.article-img {
+    width: 70% !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 !important;
+}
+
+/* ==================== 📝 ACCURATE TEXT STYLING ==================== */
+.article-text-padding {
+    padding: 40px 60px !important; /* Desktop spacing */
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.article-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14.5px;
+    color: #666;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.article-meta i {
+    color: #ff6a00;
+}
+
+.article-title {
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    color: #0d233e !important;
+    margin: 10px 0 25px 0 !important;
+    line-height: 1.3 !important;
+}
+
+.article-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 20px !important;
+    text-align: justify;
+}
+
+.article-content strong {
+    font-weight: 700;
+}
+
+.highlight {
+    color: #ff6a00 !important;
+    font-weight: 600;
+}
+
+/* ==================== 📱 MOBILE RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .article-content-card {
+        width: 100% !important;
+        border-radius: 0 !important;
+    }
+
+    .article-text-padding {
+        padding: 20px !important;
+    }
+
+    .article-title {
+        font-size: 24px !important;
+    }
+
+    .article-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+/* 1. Central Wrapper (Page-la center panna) */
+.central-blog-container {
+    display: flex !important;
+    justify-content: center !important;
+    background-color: #f9f9f9 !important; /* Slight grey background to pop the white card */
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+/* 2. Main Content Card */
+.article-content-card {
+    width: 95% !important;
+    max-width: 1050px !important; /* Standard Desktop blog width */
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+    border-radius: 5px !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+}
+
+/* 3. Text Padding & Font */
+.article-inner-padding {
+    padding: 40px 60px !important;
+    font-family: 'Poppins', sans-serif !important; /* Accurate modern font */
+}
+
+/* 4. Headings (Titles) */
+.main-title {
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    color: #0d233e !important; /* Dark Blue from screenshot */
+    margin-bottom: 25px !important;
+}
+
+.sub-title {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    color: #000000 !important; /* Pure Black for second section */
+    margin-top: 40px !important;
+    margin-bottom: 20px !important;
+}
+
+/* 5. Paragraphs & Accurate Spacing */
+.article-content p {
+    font-size: 16px !important;
+    line-height: 1.8 !important; /* Clear readability */
+    color: #333333 !important;
+    margin-bottom: 20px !important;
+    text-align: justify !important;
+}
+
+/* 6. Accurate Colors & Highlights */
+.orange-highlight {
+    color: #ff6a00 !important; /* Accurate Orange color from image */
+    font-weight: 700 !important;
+}
+
+.bold-black {
+    font-weight: 700 !important;
+    color: #000 !important;
+}
+
+.italic-bold {
+    font-style: italic !important;
+    font-weight: 700 !important;
+}
+
+/* 7. Server List (Bullets) */
+.server-list {
+    list-style-type: disc !important;
+    margin: 20px 0 20px 40px !important;
+}
+
+.server-list li {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin-bottom: 10px !important;
+    color: #000 !important;
+}
+
+/* 8. Support Contact Section */
+.support-box {
+    margin-top: 25px !important;
+}
+
+.support-box p {
+    margin-bottom: 5px !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+}
+
+/* 9. Mobile Responsiveness */
+@media (max-width: 768px) {
+    .article-inner-padding {
+        padding: 25px !important;
+    }
+    .main-title { font-size: 24px !important; }
+    .sub-title { font-size: 20px !important; }
+    .article-content-card { width: 100% !important; border-radius: 0 !important; }
+}
+
+/* 1. Main White Box Container */
+.article-content-card {
+    width: 95%;
+    max-width: 1050px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    border-radius: 8px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+/* 2. Inner Spacing */
+.article-inner-padding {
+    padding: 40px 60px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* 3. Article Content Styling */
+.main-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0d233e;
+    margin-bottom: 20px;
+}
+
+.article-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+/* 4. Connection Guide Section (Separation Line) */
+.connection-guide {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.guide-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 15px;
+}
+
+.orange-highlight {
+    color: #ff6a00;
+    font-weight: 700;
+}
+
+.server-list {
+    list-style-type: disc;
+    margin: 15px 0 25px 40px;
+}
+
+.server-list li {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* 5. Support Box Styling */
+.support-box {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-left: 5px solid #ff6a00;
+    border-radius: 4px;
+}
+
+.support-box p {
+    font-size: 18px;
+    font-weight: 800;
+    font-style: italic;
+    color: #000;
+    margin-bottom: 5px !important;
+}
+
+/* 6. Mobile Responsive */
+@media (max-width: 768px) {
+    .article-inner-padding { padding: 20px; }
+    .main-title { font-size: 24px; }
+    .guide-title { font-size: 20px; }
+    .support-box p { font-size: 16px; }
+}
+/* ==================== 🎬 FB VIDEO CARD STYLING ==================== */
+
+.fb-video-container {
+    margin: 40px auto 20px;
+    width: 100%;
+    max-width: 800px; /* PC View-il size-ai control seiyum */
+    text-align: center;
+}
+
+.video-preview-card {
+    position: relative;
+    width: 100%;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    line-height: 0;
+}
+
+.video-preview-card video {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+
+/* Play Button Design */
+.play-btn-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2); /* Dark shade on image */
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.play-btn-overlay:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.play-icon {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #ff6a00; /* Brand Orange */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    padding-left: 5px; /* Alignment fix for arrow */
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.video-footer {
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    text-align: left;
+}
+
+.video-footer p {
+    font-size: 15px;
+    color: #555;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .play-icon { width: 50px; height: 50px; font-size: 20px; }
+    .video-footer p { font-size: 13px; }
+}

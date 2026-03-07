@@ -1,0 +1,469 @@
+
+/* ==================== 🌈 CSS VARIABLES ==================== */
+:root {
+    --brand-orange: #ff6a00;
+    --link-blue: #fafafa;
+    --bg-white: #ffffff;
+}
+
+/* ==================== 🔥 RESET & BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-white);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* 3. Mobile View Only */
+@media screen and (max-width: 768px) {
+    .nav-container {
+        display: flex;
+        justify-content: space-between; /* Logo left, Menu right */
+        align-items: center;
+        padding: 10px 20px;
+    }
+
+    .mobile-menu-btn {
+        display: block !important;
+        font-size: 28px;
+        color: #ff6600; /* Unga orange theme color */
+        cursor: pointer;
+    }
+
+    /* Mobile-la mitha items-ah hide panna */
+    .nav-links, .contact-box {
+        display: none !important;
+    }
+
+    /* Logo size mobile-ku yethamaari */
+    .logo img {
+        height: 45px;
+        width: auto;
+    }
+}
+
+/* ==================== 🖥️ PC VIEW ONLY (Min-width: 769px) ==================== */
+@media screen and (min-width: 769px) {
+
+    /* 1. Navbar Alignment (Home to Contact in one line) */
+    .nav-links {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        gap: 25px; /* Links-ku naduvula gap */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 2. Hide Dropdown initially (Fix for image_cf1045.png) */
+    .dropdown-wrapper, 
+    .service-list {
+        display: none !important; /* Items munnadiyae theriya koodathu */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #ffffff;
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        z-index: 9999;
+        padding: 20px;
+        border-top: 3px solid #ff6a00;
+    }
+
+    /* 3. Dropdown Positioning */
+    .has-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Show only on Hover */
+    .has-dropdown:hover .dropdown-wrapper {
+        display: flex !important; /* Mega Menu 2 columns-kaaga */
+        width: 500px; 
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 25px;
+    }
+
+    .has-dropdown:hover .service-list {
+        display: block !important; /* Services list-kaaga */
+        width: 300px;
+    }
+
+    /* 4. Dropdown List Item Styling */
+    .dropdown-column, .service-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .dropdown-column li, .service-list li {
+        border-bottom: 1px solid #f2f2f2;
+        padding: 5px 0;
+    }
+
+    .dropdown-column li a, .service-list li a {
+        color: #333 !important;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        padding: 8px 10px;
+        white-space: nowrap; 
+        font-weight: 500;
+    }
+
+    .dropdown-column li a i, .service-list li a i {
+        margin-right: 12px;
+        color: #ff6a00;
+        width: 20px;
+    }
+
+    /* 5. Contact Box (image_be4a10.jpg fix) */
+    .contact-box {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .phone-circle {
+        background: #ff6a00;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* ==================== 📱 MOBILE RESET (Prevent breaking) ==================== */
+@media screen and (max-width: 768px) {
+    .dropdown-wrapper, .service-list {
+        display: none !important; /* Mobile menu-vukku dropdown ippo theriya koodathu */
+    }
+}
+
+
+/* Hero Section Style */
+.updates-hero {
+    background-color: #ff6801;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.updates-hero h1 {
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    margin: 0;
+}
+
+/* Center Container for Journey Page */
+.journey-content-section {
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+.center-container {
+    max-width: 900px; /* Text nalla centre-la vara */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.journey-article .main-image img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.article-meta {
+    margin-bottom: 20px;
+    color: #ff6801; /* Icons color */
+    font-size: 14px;
+}
+
+.article-meta span {
+    margin-right: 20px;
+}
+
+.article-body h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.article-body p {
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 16px;
+    text-align: justify;
+}
+
+/*imag 1  ikknaa code fix*/
+/* --- Box Container for the Image --- */
+.testimonial-container-fixed {
+    width: 100% !important;
+    max-width: 1000px !important; /* Unga design-ukku etra periya box size */
+    margin: 60px auto !important; /* Mela kela neat-aana space */
+    padding: 0 15px !important;   /* Side-la konjam gap */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: transparent !important;
+    overflow: hidden !important;  /* Zoom pannum pothu veliye viriyaathu */
+}
+
+/* --- Image Scaling Settings --- */
+.testimonial-full-img {
+    width: 100% !important;      /* Box-kku etrapola zoom aagum */
+    height: auto !important;     /* Shape maarama irukka */
+    display: block !important;
+    border-radius: 20px !important; /* Image-kku corners-ai round panna */
+    object-fit: contain !important;
+    /* Zoom-il image position center-ila irukka */
+    transform-origin: center center;
+    transition: transform 0.3s ease; 
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 768px) {
+    .testimonial-container-fixed {
+        margin: 30px auto !important;
+        padding: 0 10px !important;
+    }
+}
+
+
+
+/*imag 2  ikknaa code fix*/
+/* --- Global Box Container for Testimonial Images --- */
+.testimonial-img-wrapper {
+    width: 100% !important;
+    max-width: 1000px !important; /* Box size limit */
+    margin: 40px auto !important;  /* Center alignment */
+    padding: 0 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: transparent !important;
+    overflow: hidden !important;
+}
+
+/* --- Image Fluid Settings --- */
+.testimonial-img-fluid {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    border-radius: 12px !important; /* Slight curve for the orange box corners */
+    object-fit: contain !important;
+    /* Zoom stability settings */
+    transform-origin: center center;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .testimonial-img-wrapper {
+        margin: 20px auto !important;
+    }
+}
+
+
+
+/*imag 3  ikknaa code fix*/
+/* --- Box Container for the Image --- */
+.testimonial-img-wrapper {
+    width: 100% !important;
+    max-width: 1000px !important; /* Box size limit */
+    margin: 40px auto !important;  /* Centers the box */
+    padding: 0 15px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: transparent !important;
+    overflow: hidden !important; 
+}
+
+/* --- Image Fluid & Locked Scale --- */
+.testimonial-fixed-img {
+    width: 100% !important;
+    max-width: 950px !important; /* Image size inside box */
+    height: auto !important;
+    display: block !important;
+    border-radius: 15px !important; /* Corner rounding */
+    object-fit: contain !important;
+    transform-origin: center center;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .testimonial-img-wrapper {
+        margin: 20px auto !important;
+        padding: 0 10px !important;
+    }
+}
+
+
+/* --- Year End Main Box Container --- */
+.year-end-box-container {
+    width: 100% !important;
+    max-width: 1000px !important; /* Box size limit for zoom stability */
+    margin: 60px auto !important; /* Center alignment */
+    padding: 20px !important;
+    background: transparent !important;
+    overflow: hidden !important;
+}
+
+.year-end-content p {
+    font-size: 18px !important;
+    line-height: 1.8 !important;
+    text-align: justify !important;
+    color: #333 !important; /* Theme color-kku etrapola mathikongga */
+    margin-bottom: 25px !important;
+}
+
+.year-end-title {
+    text-align: center !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-top: 30px !important;
+    margin-bottom: 20px !important;
+}
+
+/* --- Family Image Locked Container --- */
+.family-click-wrapper {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 20px !important;
+}
+
+.family-img-fluid {
+    width: 100% !important;
+    max-width: 850px !important; /* Image scale limit */
+    height: auto !important;
+    display: block !important;
+    border-radius: 10px !important; /* Neat corners */
+    object-fit: contain !important;
+    /* Zoom behavior fix */
+    transform-origin: center center;
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 768px) {
+    .year-end-box-container {
+        padding: 10px !important;
+    }
+    .year-end-title {
+        font-size: 20px !important;
+    }
+}
+
+/* --- Navigation Box Styles --- */
+.nav-box-container {
+    width: 100% !important;
+    max-width: 1100px !important;
+    margin: 40px auto 10px auto !important;
+    padding: 20px !important;
+    border-bottom: 1px solid #f2f2f2 !important; /* Bottom line from image */
+}
+
+.post-title {
+    font-size: 20px !important;
+    color: #333 !important;
+    font-weight: 500 !important;
+    margin-bottom: 8px !important;
+}
+
+.prev-post-link {
+    color: #ff6801 !important; /* Orange Link Color */
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+}
+
+/* --- Comment Box Wrapper Styles --- */
+.comment-box-wrapper {
+    width: 100% !important;
+    max-width: 1100px !important;
+    margin: 0 auto 60px auto !important;
+    padding: 20px !important;
+}
+
+.comment-card-locked {
+    background-color: #ffffff !important;
+    border: 1px solid #f0f0f0 !important;
+    padding: 50px !important;
+    border-radius: 4px !important;
+}
+
+.comment-header-text {
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    margin-bottom: 10px !important;
+}
+
+.comment-sub-info {
+    font-size: 14px !important;
+    color: #777 !important;
+    margin-bottom: 40px !important;
+}
+
+/* --- Input & Textarea Alignment --- */
+.form-row-inputs {
+    display: flex !important;
+    gap: 30px !important;
+    margin-bottom: 25px !important;
+}
+
+.comment-input {
+    flex: 1 !important;
+    padding: 16px !important;
+    border: 1px solid #e8e8e8 !important;
+    background-color: #fafafa !important;
+}
+
+.checkbox-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 25px !important;
+    font-size: 14px !important;
+    color: #555 !important;
+}
+
+.comment-textarea {
+    width: 100% !important;
+    height: 180px !important;
+    padding: 16px !important;
+    border: 1.5px solid #1e73be !important; /* Blue border for comment area */
+    background-color: #fafafa !important;
+    margin-bottom: 30px !important;
+    resize: none !important;
+}
+
+/* --- Orange Submit Button --- */
+.comment-submit-button {
+    background-color: #ff6801 !important;
+    color: #ffffff !important;
+    padding: 15px 50px !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .form-row-inputs { flex-direction: column !important; }
+    .comment-card-locked { padding: 25px !important; }
+}
