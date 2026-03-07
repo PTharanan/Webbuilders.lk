@@ -357,14 +357,4 @@ if (document.readyState === 'loading') {
 
 console.log('WEBbuilders.lk JavaScript loaded successfully!');
 
-const openMenu = document.getElementById('openMenu');
-const closeMenu = document.getElementById('closeMenu');
-const mobileOverlay = document.getElementById('mobileOverlay');
-
-openMenu.addEventListener('click', () => {
-    mobileOverlay.style.display = 'flex';
-});
-
-closeMenu.addEventListener('click', () => {
-    mobileOverlay.style.display = 'none';
-});
+console.log('WEBbuilders.lk JavaScript fully initialized');

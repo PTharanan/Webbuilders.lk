@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <h3>Our year end journey</h3>
                     <p>We are happy to share our work journey with all of you. Every struggle and every work pressure made us stronger. We would like to...</p>
-                    <a href="#" class="read-more">READ MORE »</a>
+                    <a href="journey-2022.php" class="read-more">READ MORE »</a>
                 </div>
                 <div class="card-footer">
                     <span>January 1, 2023</span>
@@ -49,7 +49,7 @@
                 <div class="card-body">
                     <h3>WordPress website security tips 2023</h3>
                     <p>Are you sure that your WordPress website is safe or not? Hackers are increasing day by day and even small businesses are also having these...</p>
-                    <a href="#" class="read-more">READ MORE »</a>
+                    <a href="wp-security-2023.php" class="read-more">READ MORE »</a>
                 </div>
                 <div class="card-footer">
                     <span>December 29, 2022</span>
@@ -64,7 +64,7 @@
                 <div class="card-body">
                     <h3>What is domain & Hosting?</h3>
                     <p>A domain is an address for a website with both machine-readable IP addresses and human-readable addresses. Domains specify how the Internet is structured, and it...</p>
-                    <a href="#" class="read-more">READ MORE »</a>
+                    <a href="domain-hosting.php" class="read-more">READ MORE »</a>
                 </div>
                 <div class="card-footer">
                     <span>October 16, 2022</span>
