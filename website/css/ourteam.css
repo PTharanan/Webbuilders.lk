@@ -1,0 +1,624 @@
+
+/* ==================== 🌈 CSS VARIABLES ==================== */
+:root {
+    --brand-orange: #ff6a00;
+    --link-blue: #fafafa;
+    --bg-white: #ffffff;
+}
+
+/* ==================== 🔥 RESET & BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-white);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Desktop-la Menu button theriya koodathu */
+@media screen and (min-width: 769px) {
+    .mobile-menu-btn {
+        display: none;
+    }
+}
+
+/* 1. Common Settings - Button-ah hide pannidunga */
+.mobile-menu-btn {
+    display: none;
+}
+
+/* 2. PC View - No Changes Section */
+@media screen and (min-width: 769px) {
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .nav-links {
+        display: flex; /* Links-ah thirumba kaatum */
+        list-style: none;
+    }
+
+    .contact-box {
+        display: flex; /* Contact box-ah thirumba kaatum */
+        align-items: center;
+    }
+
+    /* PC-la mobile icon-ah mothama thookidunga (Space disturb aagathu) */
+    #openMenu.mobile-menu-btn {
+        display: none !important;
+    }
+}
+
+/* 3. Mobile View Only */
+@media screen and (max-width: 768px) {
+    .nav-container {
+        display: flex;
+        justify-content: space-between; /* Logo left, Menu right */
+        align-items: center;
+        padding: 10px 20px;
+    }
+
+    .mobile-menu-btn {
+        display: block !important;
+        font-size: 28px;
+        color: #ff6600; /* Unga orange theme color */
+        cursor: pointer;
+    }
+
+    /* Mobile-la mitha items-ah hide panna */
+    .nav-links, .contact-box {
+        display: none !important;
+    }
+
+    /* Logo size mobile-ku yethamaari */
+    .logo img {
+        height: 45px;
+        width: auto;
+    }
+}
+
+/* ==================== 🖥️ PC VIEW ONLY (Min-width: 769px) ==================== */
+@media screen and (min-width: 769px) {
+
+    /* 1. Navbar Alignment (Home to Contact in one line) */
+    .nav-links {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        gap: 25px; /* Links-ku naduvula gap */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 2. Hide Dropdown initially (Fix for image_cf1045.png) */
+    .dropdown-wrapper, 
+    .service-list {
+        display: none !important; /* Items munnadiyae theriya koodathu */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #ffffff;
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        z-index: 9999;
+        padding: 20px;
+        border-top: 3px solid #ff6a00;
+    }
+
+    /* 3. Dropdown Positioning */
+    .has-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Show only on Hover */
+    .has-dropdown:hover .dropdown-wrapper {
+        display: flex !important; /* Mega Menu 2 columns-kaaga */
+        width: 500px; 
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 25px;
+    }
+
+    .has-dropdown:hover .service-list {
+        display: block !important; /* Services list-kaaga */
+        width: 300px;
+    }
+
+    /* 4. Dropdown List Item Styling */
+    .dropdown-column, .service-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .dropdown-column li, .service-list li {
+        border-bottom: 1px solid #f2f2f2;
+        padding: 5px 0;
+    }
+
+    .dropdown-column li a, .service-list li a {
+        color: #333 !important;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        padding: 8px 10px;
+        white-space: nowrap; 
+        font-weight: 500;
+    }
+
+    .dropdown-column li a i, .service-list li a i {
+        margin-right: 12px;
+        color: #ff6a00;
+        width: 20px;
+    }
+
+    /* 5. Contact Box (image_be4a10.jpg fix) */
+    .contact-box {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .phone-circle {
+        background: #ff6a00;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* ==================== 📱 MOBILE RESET (Prevent breaking) ==================== */
+@media screen and (max-width: 768px) {
+    .dropdown-wrapper, .service-list {
+        display: none !important; /* Mobile menu-vukku dropdown ippo theriya koodathu */
+    }
+}
+
+/* ==================== 🖥️ PC VIEW ONLY (Min-width: 769px) ==================== */
+@media screen and (min-width: 769px) {
+.mobile-submenu{
+    max-height:0;
+    overflow:hidden;
+    transition:0.4s;
+}
+}
+
+.mobile-dropdown.active .mobile-submenu{
+    max-height:500px;
+}
+/* ==================== 📸 JOIN OUR SQUAD STYLES ==================== */
+.join-squad {
+    width: 100%;
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.squad-container {
+    width: 90%;
+    max-width: 1200px;
+    height: 450px; /* படத்தின் உயரத்தை இங்கேயே மாற்றிக்கொள்ளலாம் */
+    background-image: url('images/team-photo.jpg'); /* உங்கள் டீம் போட்டோவை இங்கே கொடுக்கவும் */
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px; /* படத்திற்கு வளைவான ஓரங்கள் */
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* படத்தில் உள்ள அந்த Orange Overlay எஃபெக்ட் */
+.squad-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 106, 0, 0.75); /* படத்தில் உள்ளது போன்ற ஆரஞ்சு நிறம் */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.4s ease;
+}
+
+/* மவுஸ் மேலே செல்லும்போது மட்டும் தெளிவான படம் தெரிய */
+.squad-container:hover .squad-overlay {
+    background: rgba(255, 106, 0, 0.6);
+}
+
+.squad-text {
+    color: #ffffff;
+    font-size: 70px; /* எழுத்தின் அளவு */
+    font-weight: 800;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    text-align: center;
+    padding: 0 20px;
+}
+
+/* ==================== 📱 MOBILE OPTIMIZATION ==================== */
+@media (max-width: 768px) {
+    .squad-container {
+        height: 300px;
+        width: 95%;
+    }
+    .squad-text {
+        font-size: 35px;
+        letter-spacing: 0;
+    }
+}
+/* --- Container Settings --- */
+.join-squad {
+    width: 100%;
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.squad-container {
+    width: 80%;
+    max-width: 1200px;
+    height: 450px;
+    background-image: url('https://webbuilders.lk/wp-content/uploads/2025/05/20250509_165515-scaled.jpg'); /* உங்கள் படத்தின் பெயர் */
+    background-size: cover;
+    background-position: center;
+    border-radius: 25px; /* வளைவான ஓரங்கள் */
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* நிலையான ஆரஞ்சு வண்ணம் - Hover செய்தாலும் மாறாது */
+.squad-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 0.8 என்பது முகங்கள் தெரியக்கூடிய சரியான அடர்த்தி (Transparency) */
+    background: rgba(245, 137, 59, 0.8); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: none; /* நிறம் மாறுவதை தடுக்க */
+}
+
+/* Hover செய்யும்போது நிறம் மாறாமல் இருக்க இதைச் சேர்த்துள்ளேன் */
+.squad-container:hover .squad-overlay {
+    background: rgba(245, 137, 59, 0.8); 
+}
+
+/* --- Text Styles --- */
+.animated-headline {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 60px; /* PC அளவு */
+    line-height: 1;
+}
+
+/* "Join Our" - மெலிதாக (Normal) இருக்க */
+.static-text {
+    font-weight: 400; 
+    white-space: nowrap;
+}
+
+/* "TEAM, SQUARD..." - தடிமனாக (Bold) இருக்க */
+.dynamic-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    height: 65px; /* Font size-க்கு ஏற்றவாறு */
+    overflow: hidden;
+}
+
+.dynamic-text {
+    display: block;
+    height: 100%;
+    animation: rotateText 9s infinite; 
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 900; /* நல்ல தடிமனான எழுத்து */
+}
+
+/* --- அனிமேஷன் --- */
+@keyframes rotateText {
+    0%, 25% { transform: translateY(0); }        
+    33%, 58% { transform: translateY(-100%); }   
+    66%, 91% { transform: translateY(-200%); }   
+    100% { transform: translateY(0); }           
+}
+
+/* --- 📱 மொபைல் போனுக்கான அளவு --- */
+@media (max-width: 768px) {
+    .animated-headline {
+        font-size: 32px; 
+        gap: 8px;
+    }
+    .squad-container {
+        height: 300px;
+        width: 95%;
+    }
+    .dynamic-wrapper {
+        height: 35px; /* மொபைல் font-க்கு ஏற்ற உயரம் */
+    }
+}
+
+/* --- Team Section --- */
+.team-section {
+    padding: 60px 5%;
+    background-color: #ffffff;
+}
+
+/* 4 Columns Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* --- Card Styling --- */
+.member-card {
+    background: #fff;
+    border-radius: 4px; /* படத்தில் உள்ளது போன்ற சிறிய வளைவு */
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* மென்மையான நிழல் */
+    transition: transform 0.3s ease;
+}
+
+/* --- Image & Zoom Animation --- */
+.img-box {
+    width: 100%;
+    height: 350px; /* படத்தின் உயரம் */
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
+
+.img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease; /* Zoom வேகத்தை கட்டுப்படுத்துகிறது */
+}
+
+/* மவுஸ் மேல செல்லும்போது படம் மட்டும் ஜூம் ஆகும் */
+.member-card:hover .img-box img {
+    transform: scale(1.1);
+}
+
+/* --- Info Section (Orange Box) --- */
+.member-info {
+    background-color: #ff6a00; /* பிரகாசமான ஆரஞ்சு நிறம் */
+    color: #ffffff;
+    padding: 22px 10px;
+    text-align: center;
+}
+
+.member-info h3 {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    text-transform: capitalize;
+    font-family: 'Poppins', sans-serif;
+}
+
+.member-info p {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    opacity: 0.95;
+    text-transform: uppercase;
+}
+
+/* --- 📱 Mobile Responsive --- */
+@media screen and (max-width: 1100px) {
+    .team-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media screen and (max-width: 768px) {
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media screen and (max-width: 480px) {
+    .team-grid { grid-template-columns: 1fr; }
+    .img-box { height: 400px; }
+}
+
+/* --- Verification Section Styling --- */
+.verification-section {
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.verification-container {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* இடதுபுறப் படம் */
+.form-image-side {
+    flex: 1;
+    background-image: url('https://webbuilders.lk/wp-content/uploads/2025/05/20250509_165515-scaled.jpg'); /* உங்கள் டீம் படம் */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    min-height: 500px;
+}
+
+.form-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(212, 107, 32, 0.85); /* படத்தில் உள்ள அதே ஆரஞ்சு ஓவர்லே */
+    display: flex;
+    align-items: center;
+    padding: 40px;
+}
+
+.form-overlay h2 {
+    color: white;
+    font-size: clamp(24px, 4vw, 45px);
+    font-weight: 900;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+/* வலதுபுற ஃபார்ம் */
+.form-content-side {
+    flex: 1.5;
+    background-color: #616161; /* படத்தில் உள்ள சாம்பல் நிறம் */
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-content-side input, 
+.form-content-side textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    outline: none;
+}
+
+/* Captcha Style - Exactly like your image */
+.captcha-placeholder {
+    background: #f9f9f9;
+    padding: 10px 12px;
+    width: 300px; /* Standard width */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    font-family: Roboto, helvetica, arial, sans-serif;
+}
+
+/* Left side: Checkbox and Text */
+.captcha-left {
+    display: flex;
+    align-items: center;
+}
+
+/* Square Tick Box Style */
+#robot-check {
+    width: 28px; /* Periya box */
+    height: 28px;
+    cursor: pointer;
+    border: 2px solid #c1c1c1;
+    appearance: none; /* Default browser style-ai remove panna */
+    -webkit-appearance: none;
+    background: #fff;
+    border-radius: 2px;
+    position: relative;
+    margin-right: 14px;
+}
+
+/* Click pannum pothu tick vara */
+#robot-check:checked::after {
+    content: "✔";
+    position: absolute;
+    top: -4px;
+    left: 4px;
+    font-size: 20px;
+    color: #009900; /* Green tick */
+}
+
+.captcha-left label {
+    font-size: 14px;
+    color: #000;
+    cursor: pointer;
+}
+
+/* Right side: Logo and Links */
+.captcha-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+}
+
+.captcha-right img {
+    width: 28px !important;
+    margin-bottom: 2px;
+}
+
+.captcha-label {
+    font-size: 8px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.captcha-links {
+    font-size: 8px;
+    color: #555;
+}
+
+/* Send Button */
+.send-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #ff6a00; /* பிராண்ட் ஆரஞ்சு */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.send-btn:hover {
+    background-color: #e65c00;
+}
+
+.form-note {
+    color: #fff;
+    font-size: 11px;
+    margin-top: 20px;
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* --- மொபைல் போனுக்கான மாற்றம் --- */
+@media (max-width: 900px) {
+    .verification-container {
+        flex-direction: column;
+    }
+    .form-image-side {
+        min-height: 250px;
+    }
+    .form-content-side {
+        padding: 30px 20px;
+    }
+}
