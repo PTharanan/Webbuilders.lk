@@ -75,7 +75,7 @@
             <li><a href="support.php">Support</a></li>
 
             <li><a href="home.php#dream-domain-section" class="alt-color">Domain Finder</a></li>
-            <li><a href="home.php#team">Our Team</a></li>
+            <li><a href="ourteam.php">Our Team</a></li>
             <li><a href="update.php">Our Updates</a></li>
 
             <li><a href="contact.php">Contact</a></li>
@@ -137,7 +137,7 @@
         </li>
         <li><a href="support.php">Support</a></li>
         <li><a href="home.php#dream-domain-section">Domain Finder</a></li>
-        <li><a href="home.php#team">Our Team</a></li>
+        <li><a href="ourteam.php">Our Team</a></li>
         <li><a href="update.php">Our Updates</a></li>
         <li><a href="contact.php">Contact</a></li>
     </ul>
